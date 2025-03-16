@@ -3,3 +3,5 @@ __pycache__/
 .env
 chatbot_memory.json
 pdf_documents/
+myenv/
+

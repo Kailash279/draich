@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+.env
+chatbot_memory.json
+pdf_documents/

@@ -1,0 +1,16 @@
+{
+    "python.testing.pytestArgs": [
+        "ich_chatbot"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "explorer.enableDragAndDrop": true,
+    "files.exclude": {
+        "": true
+    },
+    "workbench.editor.openSideBySideDirection": "down",
+    "python.analysis.typeEvaluation.enableExperimentalFeatures": true,
+    "sqltools.connectionExplorer.groupConnected": true,
+    "editor.experimental.asyncTokenizationLogging": true,
+    "search.useGlobalIgnoreFiles": true
+}

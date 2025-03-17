@@ -165,7 +165,7 @@ if prompt := st.chat_input("What would you like to know?"):
 # Sidebar with information
 with st.sidebar:
     st.header("About")
-    st.write("Hi, I am Kailash Kothari, the developer of this chatbot. I need your help in training this botIt’s not fully ready yet, but with your assistance, it will start working soon. With your support, this bot can improve and become even better!")
+    st.write("Hi, I am Kailash Kothari, the developer of this chatbot. I need your help in training this bot It’s not fully ready yet, but with your assistance, it will start working soon. With your support, this bot can improve and become even better!")
     st.divider()
     
     # Email subscription form

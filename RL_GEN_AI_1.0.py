@@ -1,5 +1,3 @@
-
-#new file in this raw
 import json
 import sqlite3
 import difflib  # Similarity match ke liye
@@ -21,11 +19,23 @@ CHATBOT_MEMORY_PATH = "chatbot_memory.json"  # Reinforcement Learning Memory
 PDF_FOLDER = "pdf_documents/"  # Folder for PDFs
 
 # =============================
-# LOAD NLP MODEL (BERT)
+# LOAD NLP MODEL (BERT) WITH ERROR HANDLING
 # =============================
 
-tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
-model = BertForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=5)
+def load_model():
+    try:
+        tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
+        model = BertForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=5)
+        print("✅ Model Loaded Successfully")
+        return tokenizer, model
+    except Exception as e:
+        print(f"❌ Model Loading Error: {e}")
+        return None, None
+
+tokenizer, model = load_model()
+
+if not tokenizer or not model:
+    raise SystemExit("🚨 Model loading failed. Please check dependencies!")
 
 # =============================
 # DATABASE CONNECTION
@@ -69,34 +79,20 @@ def store_guidelines(data):
 
 def search_guidelines(query):
     """Search for relevant guidelines from the database & JSON."""
-    
-    # Fetch all data from database
-    cursor.execute("SELECT filename, content FROM guidelines")
+    cursor.execute("SELECT filename, content FROM guidelines WHERE content LIKE ?", (f"%{query}%",))
     db_results = cursor.fetchall()
-
-    # Fuzzy matching for text similarity
-    matched_results = []
-    for filename, content in db_results:
-        if query.lower() in content.lower():
-            matched_results.append((filename, content[:300]))  # Show first 300 characters
-
-    # JSON data search
+    
+    matched_results = [(filename, content[:300]) for filename, content in db_results]
+    
     json_data = load_json_data()
     for entry in json_data:
         if query.lower() in entry["content"].lower():
             matched_results.append((entry["filename"], entry["content"][:300]))
 
-    # PDF search
     pdf_results = search_pdfs(query)
     matched_results.extend(pdf_results)
-
-    # Prepare final response
-    if matched_results:
-        response = "\n".join([f"📄 {row[0]}:\n{row[1]}..." for row in matched_results[:3]])  # Show top 3 results
-    else:
-        response = "⚠️ No relevant guideline found. Try different keywords."
-
-    return response
+    
+    return matched_results if matched_results else "⚠️ No relevant guideline found. Try different keywords."
 
 def search_pdfs(query):
     """Search inside PDFs for relevant text."""
@@ -110,7 +106,7 @@ def search_pdfs(query):
                     for page in reader.pages:
                         text = page.extract_text()
                         if text and query.lower() in text.lower():
-                            matched_pdfs.append((pdf_file, text[:300]))  # First 300 characters
+                            matched_pdfs.append((pdf_file, text[:300]))
                             break  # Stop after first match
     return matched_pdfs
 
@@ -120,6 +116,9 @@ def search_pdfs(query):
 
 def classify_query(user_input):
     """Use BERT to classify user query into predefined categories."""
+    if not tokenizer or not model:
+        return "Model loading error"
+    
     inputs = tokenizer(user_input, return_tensors="pt", padding=True, truncation=True)
     outputs = model(**inputs).logits
     probs = softmax(outputs, dim=1).detach().numpy()
@@ -138,9 +137,9 @@ def update_response(query, response, feedback):
         with open(CHATBOT_MEMORY_PATH, "r+") as file:
             data = json.load(file)
             if feedback == "positive":
-                data[query] = response  # Reinforce correct response
+                data[query] = response
             else:
-                data[query] = "Retraining needed"  # Mark for review
+                data[query] = "Retraining needed"
             file.seek(0)
             json.dump(data, file, indent=4)
     except FileNotFoundError:
@@ -160,32 +159,29 @@ def chatbot():
         if user_input.lower() == "exit":
             break
 
-        # Search guidelines
         category = classify_query(user_input)
         results = search_guidelines(user_input)
 
+
+        # Response
+        
         # Response
         bot_response = f"🔎 **Category:** {category}\n\n{results}"
         print(f"\nBot: {bot_response}\n")
 
+
+        # Feedback loop for RL learning
+        
         # Feedback loop for RL learning
         feedback = input("Was this helpful? (yes/no): ").strip().lower()
-        if feedback in ["yes", "y"]:
-            update_response(user_input, bot_response, "positive")
-        else:
-            update_response(user_input, bot_response, "negative")
+        update_response(user_input, bot_response, "positive" if feedback in ["yes", "y"] else "negative")
 
 # =============================
 # EXECUTION (LOAD DATA & RUN CHATBOT)
 # =============================
 
 if __name__ == "__main__":
-    # Load and store data from extracted JSON
     json_data = load_json_data()
     store_guidelines(json_data)
-
-    # Run chatbot
     chatbot()
-
-    # Close database connection
     conn.close()

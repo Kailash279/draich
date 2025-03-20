@@ -1,19 +1,18 @@
 import json
 import sqlite3
-import difflib  # Similarity match ke liye
+import difflib
 import os
-import numpy as np  # ✅ NumPy import kiya
+import numpy as np
 from transformers import BertTokenizer, BertForSequenceClassification
 from torch.nn.functional import softmax
 import torch
 from PyPDF2 import PdfReader
 
-
 # =============================
 # CONFIGURATION: SET DATA PATHS
 # =============================
 
-DATA_PATH = "D:/DATABASS/extracted_data.json" # JSON Data Path
+DATA_PATH = "D:/DATABASS/extracted_data.json"  # JSON Data Path
 DB_PATH = "D:/DATABASS/pdf_data.db"  # SQLite Database Path
 CHATBOT_MEMORY_PATH = "chatbot_memory.json"  # Reinforcement Learning Memory
 PDF_FOLDER = "pdf_documents/"  # Folder for PDFs
@@ -44,7 +43,6 @@ if not tokenizer or not model:
 conn = sqlite3.connect(DB_PATH)
 cursor = conn.cursor()
 
-# Create table if not exists
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS guidelines (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -162,17 +160,9 @@ def chatbot():
         category = classify_query(user_input)
         results = search_guidelines(user_input)
 
-
-        # Response
-        
-        # Response
         bot_response = f"🔎 **Category:** {category}\n\n{results}"
         print(f"\nBot: {bot_response}\n")
 
-
-        # Feedback loop for RL learning
-        
-        # Feedback loop for RL learning
         feedback = input("Was this helpful? (yes/no): ").strip().lower()
         update_response(user_input, bot_response, "positive" if feedback in ["yes", "y"] else "negative")
 

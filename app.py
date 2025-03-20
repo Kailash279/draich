@@ -86,7 +86,7 @@ def classify_query(user_input):
         outputs = model(**inputs)
         probs = softmax(outputs.logits, dim=1)
         predicted_class = torch.argmax(probs).item()
-        categories = ["General", "Safety", "Quality", "Efficacy", "Other"]
+        categories = ["General", "Safety", "Quality", "Efficacy", "Miscellaneous"]
         return categories[predicted_class]
     except Exception as e:
         return f"Classification error: {str(e)}"

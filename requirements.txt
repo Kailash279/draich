@@ -8,3 +8,8 @@ torch
 nltk
 PyPDF2
 nltk
+streamlit
+streamlit
+transformers
+torch
+requests

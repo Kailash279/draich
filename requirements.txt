@@ -13,3 +13,5 @@ streamlit
 transformers
 torch
 requests
+streamlit
+requests

@@ -3,32 +3,27 @@
 import streamlit as st
 import json
 import os
-from transformers import BertTokenizer, BertForSequenceClassification
-from torch.nn.functional import softmax
-import torch
 import requests
 from datetime import datetime
 
 # =============================
-# NLP MODEL (BERT)
+# SIMPLE NLP CLASSIFIER
 # =============================
-def load_model():
-    tokenizer = BertTokenizer.from_pretrained("distilbert-base-uncased")
-    model = BertForSequenceClassification.from_pretrained("distilbert-base-uncased", num_labels=5)
-    return tokenizer, model
-
-tokenizer, model = load_model()
-
 def classify_query(user_input):
-    inputs = tokenizer(user_input, return_tensors="pt", truncation=True, max_length=512)
-    outputs = model(**inputs)
-    probs = softmax(outputs.logits, dim=1)
-    predicted_class = torch.argmax(probs).item()
-    categories = ["General", "Safety", "Quality", "Efficacy", "Miscellaneous"]
-    return categories[predicted_class]
+    user_input = user_input.lower()
+    if "quality" in user_input:
+        return "Quality"
+    elif "safety" in user_input:
+        return "Safety"
+    elif "efficacy" in user_input:
+        return "Efficacy"
+    elif "development" in user_input or "guideline" in user_input:
+        return "General"
+    else:
+        return "Miscellaneous"
 
 # =============================
-# LOCAL JSON DATA SEARCH WITH SUMMARIZATION
+# LOAD JSON DATA
 # =============================
 def load_data():
     json_path = "restructured_guidelines.json"
@@ -42,6 +37,9 @@ def load_data():
             print("Error loading JSON:", e)
             return []
 
+# =============================
+# SEARCH GUIDELINES WITH SUMMARIZATION
+# =============================
 def search_guidelines(query):
     data = load_data()
     results = []
@@ -107,7 +105,7 @@ if st.button("🧹 Clear Chat"):
     st.session_state.messages = []
     st.experimental_rerun()
 
-# Store chat messages
+# Initialize session state
 if 'messages' not in st.session_state:
     st.session_state.messages = []
 

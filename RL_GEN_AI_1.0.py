@@ -7,6 +7,7 @@ from transformers import BertTokenizer, BertForSequenceClassification
 from torch.nn.functional import softmax
 import torch
 from PyPDF2 import PdfReader
+import nltk
 
 # =============================
 # CONFIGURATION: SET DATA PATHS

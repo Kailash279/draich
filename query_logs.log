@@ -1,0 +1,7 @@
+2025-03-30 09:54:46 - INFO - Wikipedia: language=en, user_agent: CosmosApp/1.0 (kailash@example.com) (Wikipedia-API/0.8.1; https://github.com/martin-majlis/Wikipedia-API/), extract_format=1
+2025-03-30 09:55:37 - INFO - Request URL: https://en.wikipedia.org/w/api.php?format=json&redirects=1&action=query&prop=info&titles=data&inprop=protection|talkid|watched|watchers|visitingwatchers|notificationtimestamp|subjectid|url|readable|preload|displaytitle|varianttitles
+2025-03-30 09:55:38 - INFO - Request URL: https://en.wikipedia.org/w/api.php?format=json&redirects=1&action=query&prop=extracts&titles=Data&explaintext=1&exsectionformat=wiki
+2025-03-30 09:55:38 - INFO - Query success: data
+2025-03-30 10:05:11 - INFO - Wikipedia: language=en, user_agent: CosmosApp/1.0 (kailash@example.com) (Wikipedia-API/0.8.1; https://github.com/martin-majlis/Wikipedia-API/), extract_format=1
+2025-03-30 10:16:28 - WARNING - Used language 'english' is longer than 5. It is suspicious
+2025-03-30 10:16:28 - INFO - Wikipedia: language=english, user_agent: CosmosApp/1.0 (kailash@example.com) (Wikipedia-API/0.8.1; https://github.com/martin-majlis/Wikipedia-API/), extract_format=1

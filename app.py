@@ -13,8 +13,8 @@ from datetime import datetime
 # NLP MODEL (BERT)
 # =============================
 def load_model():
-    tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
-    model = BertForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=5)
+    tokenizer = BertTokenizer.from_pretrained("distilbert-base-uncased")
+    model = BertForSequenceClassification.from_pretrained("distilbert-base-uncased", num_labels=5)
     return tokenizer, model
 
 tokenizer, model = load_model()

@@ -6,7 +6,6 @@ import os
 import requests
 from datetime import datetime
 import textract  # for reading various file formats
-from rl_gen_ai import generate_response
 
 
 # =============================

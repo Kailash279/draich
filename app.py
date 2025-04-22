@@ -5,9 +5,24 @@ import json
 import os
 import requests
 from datetime import datetime
+import textract  # for reading various file formats
+from RL_GEN_AI_1_0 import generate_response  # integrate RL module
 
 # =============================
-# SIMPLE NLP CLASSIFIER
+# FILE HANDLING & EXTRACTION
+# =============================
+def extract_text_from_file(uploaded_file):
+    file_path = f"/tmp/{uploaded_file.name}"
+    with open(file_path, "wb") as f:
+        f.write(uploaded_file.getbuffer())
+    try:
+        text = textract.process(file_path).decode("utf-8")
+        return text.strip()
+    except Exception as e:
+        return f"Could not extract text: {e}"
+
+# =============================
+# NLP CLASSIFIER
 # =============================
 def classify_query(user_input):
     user_input = user_input.lower()
@@ -23,10 +38,10 @@ def classify_query(user_input):
         return "Miscellaneous"
 
 # =============================
-# LOAD JSON DATA
+# LOAD ENHANCED JSON DATA
 # =============================
 def load_data():
-    json_path = "restructured_guidelines.json"
+    json_path = "enhanced_guidelines.json"
     if not os.path.exists(json_path):
         return []
     with open(json_path, "r", encoding="utf-8") as file:
@@ -58,13 +73,10 @@ def search_guidelines(query):
             content = entry.get("content", "")
             summary = entry.get("summary", "No summary available.")
             title = entry.get("title", "Untitled")
+            explanation = entry.get("explanation", "")
 
-            if show_full:
-                text = content
-            else:
-                text = summarize(content)
-
-            results.append(f"**{title}**\n{text}")
+            text = content if show_full else summarize(content)
+            results.append(f"**{title}**\n{explanation}\n{text}")
 
     return "\n\n".join(results) if results else "No matching guidelines found."
 
@@ -98,24 +110,31 @@ def get_greeting():
 # =============================
 st.set_page_config(page_title="ICH Guidelines Chatbot", layout="centered")
 st.title("ICH Guidelines Chatbot 🤖")
-st.markdown("Ask me anything about **ICH Guidelines** (Quality, Safety, Efficacy, etc.)")
+st.markdown("Ask me anything about **ICH Guidelines** or upload a document for analysis.")
 
 # Clear chat button
 if st.button("🧹 Clear Chat"):
     st.session_state.messages = []
     st.experimental_rerun()
 
-# Initialize session state
 if 'messages' not in st.session_state:
     st.session_state.messages = []
 
-# Show chat history
+# File uploader
+uploaded_file = st.file_uploader("📂 Upload a file (PDF, DOCX, TXT)", type=["pdf", "docx", "txt"])
+file_content = ""
+
+if uploaded_file:
+    file_content = extract_text_from_file(uploaded_file)
+    st.success("📄 File content extracted successfully!")
+
+# Display chat history
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.write(message["content"])
 
 # Chat input box
-if prompt := st.chat_input("Ask your ICH query here..."):
+if prompt := st.chat_input("Ask your ICH query or related to uploaded file..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.write(prompt)
@@ -123,9 +142,15 @@ if prompt := st.chat_input("Ask your ICH query here..."):
     greeting = get_greeting()
     category = classify_query(prompt)
     local_results = search_guidelines(prompt)
+    file_insight = ""
+
+    # If user uploaded something, analyze it
+    if uploaded_file and file_content:
+        file_insight = f"\n\n📎 Based on uploaded file:\n{generate_response(file_content, prompt)}"
+
     online_results = fetch_online_data(prompt)
 
-    response = f"{greeting}\n\n**Category:** `{category}`\n\n**Local Match:**\n{local_results}\n\n**Online Info:**\n{online_results}"
+    response = f"{greeting}\n\n**Category:** `{category}`\n\n**Local Match:**\n{local_results}{file_insight}\n\n**Online Info:**\n{online_results}"
 
     st.session_state.messages.append({"role": "assistant", "content": response})
     with st.chat_message("assistant"):
@@ -134,4 +159,4 @@ if prompt := st.chat_input("Ask your ICH query here..."):
 # Sidebar info
 with st.sidebar:
     st.header("About")
-    st.write("Hi! I am **Kailash Kothari**, the developer of this chatbot. It helps you find ICH guidelines quickly from local data and Wikipedia.")
+    st.write("Hi! I am **Kailash Kothari**, the developer of this intelligent chatbot. It can analyze ICH guidelines, uploaded documents, and answer using local + online sources.")

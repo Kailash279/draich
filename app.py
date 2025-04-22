@@ -6,7 +6,8 @@ import os
 import requests
 from datetime import datetime
 import textract  # for reading various file formats
-from RL_GEN_AI_1_0 import generate_response  # integrate RL module
+from rl_gen_ai import generate_response
+
 
 # =============================
 # FILE HANDLING & EXTRACTION
@@ -109,7 +110,7 @@ def get_greeting():
 # STREAMLIT UI
 # =============================
 st.set_page_config(page_title="ICH Guidelines Chatbot", layout="centered")
-st.title("ICH Guidelines Chatbot 🤖")
+st.title("ICH Guidelines Chatbot")
 st.markdown("Ask me anything about **ICH Guidelines** or upload a document for analysis.")
 
 # Clear chat button

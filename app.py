@@ -7,7 +7,6 @@ import requests
 from datetime import datetime
 import textract  # for reading various file formats
 
-
 # =============================
 # FILE HANDLING & EXTRACTION
 # =============================
@@ -160,3 +159,41 @@ if prompt := st.chat_input("Ask your ICH query or related to uploaded file..."):
 with st.sidebar:
     st.header("About")
     st.write("Hi! I am **Kailash Kothari**, the developer of this intelligent chatbot. It can analyze ICH guidelines, uploaded documents, and answer using local + online sources.")
+
+
+def load_guideline_data():
+    path = "ich_guidelines_full_combined.json"
+    if not os.path.exists(path):
+        return []
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+def search_guidelines(query):
+    guidelines = load_guideline_data()
+    query_lower = query.lower()
+    results = []
+
+    for item in guidelines:
+        if (query_lower in item.get("title", "").lower()
+            or query_lower in item.get("code", "").lower()
+            or query_lower in item.get("purpose", "").lower()
+            or query_lower in item.get("for_beginners", "").lower()):
+            
+            # Format sub-guidelines if any
+            subs = item.get("sub_guidelines", [])
+            sub_text = "\n".join([f"- {s['code']}: {s['title']}" for s in subs]) if subs else "None"
+
+            results.append(f"""
+### 📘 {item['code']} – {item['title']}
+**Category:** {item['category']}  
+**CTD Section:** {item['ctd_section']}  
+**Introduced:** {item['introduced']}
+
+🔍 **Purpose:** {item['purpose']}  
+🧪 **Used For:** {item['used_for']}  
+🧒 **Beginner Tip:** {item['for_beginners']}  
+🔗 **Sub-Guidelines:**  
+{sub_text}
+""")
+
+    return "\n---\n".join(results) if results else "No matching guidelines found."

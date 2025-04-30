@@ -40,7 +40,7 @@ def classify_query(user_input):
 # LOAD ENHANCED JSON DATA
 # =============================
 def load_data():
-    json_path = "enhanced_guidelines.json"
+    json_path = "ich_guidelines_full_combined.json"
     if not os.path.exists(json_path):
         return []
     with open(json_path, "r", encoding="utf-8") as file:

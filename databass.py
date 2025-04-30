@@ -3,7 +3,7 @@ import os
 import re
 
 def load_data():
-    json_path = "restructured_guidelines.json"
+    json_path = "ich_guidelines_full_combined.json"
     if not os.path.exists(json_path):
         return []
 

@@ -1,41 +1,17 @@
-import re
-from textblob import TextBlob
-
-def preprocess_text(text):
-    """
-    यह function text को clean और normalize करता है।
-    """
-    text = text.lower()  # Lowercase conversion
-    text = re.sub(r'\W', ' ', text)  # Remove special characters
-    text = re.sub(r'\s+', ' ', text).strip()  # Remove extra spaces
-    return text
-
 def classify_query(text):
-    """
-    यह function query को classify करता है और sentiment analysis करता है।
-    """
-    processed_text = preprocess_text(text)
-    
-    # Sentiment analysis using TextBlob
-    blob = TextBlob(processed_text)
-    sentiment = blob.sentiment.polarity
-    
-    # Query Classification Logic (Basic Example)
-    if "hello" in processed_text or "hi" in processed_text:
+    text = text.lower()
+
+    if any(word in text for word in ["hello", "hi", "namaste"]):
         return "Greeting"
-    elif "help" in processed_text or "support" in processed_text:
-        return "Support Query"
-    elif "bye" in processed_text or "goodbye" in processed_text:
+    elif any(word in text for word in ["bye", "goodbye", "alvida"]):
         return "Farewell"
-    elif sentiment > 0:
-        return "Positive Statement"
-    elif sentiment < 0:
-        return "Negative Statement"
+    elif any(word in text for word in ["madad", "help", "support", "query"]):
+        return "Support Query"
+    elif any(word in text for word in ["formulation", "banane", "development", "pdr"]):
+        return "Product Development"
+    elif any(word in text for word in ["stability", "shelf life", "q1"]):
+        return "Stability Testing"
+    elif any(word in text for word in ["validation", "analytical", "test", "method"]):
+        return "Analytical Validation"
     else:
         return "General Query"
-
-if __name__ == "__main__":
-    # Test the function
-    user_input = input("Enter your query: ")
-    result = classify_query(user_input)
-    print(f"Query Type: {result}")

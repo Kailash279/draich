@@ -7,15 +7,12 @@ from transformers import BertTokenizer, BertForSequenceClassification
 from torch.nn.functional import softmax
 import torch
 
-import streamlit as st
-from transformers import BertTokenizer, BertForSequenceClassification
-# your other imports...
-
 # ✅ This must be the first Streamlit command
 st.set_page_config(page_title="ICH Guidelines Chatbot", layout="centered")
 
 # Now rest of your Streamlit app
 st.title("ICH Guidelines Chatbot")
+
 # =============================
 # Load BERT Model (Fallback safe)
 # =============================
@@ -23,7 +20,7 @@ st.title("ICH Guidelines Chatbot")
 def load_model():
     try:
         tokenizer = BertTokenizer.from_pretrained("distilbert-base-uncased")
-        model = BertForSequenceClassification.from_pretrained("distilbert-base-uncased", num_labels=5)
+        model = BertForSequenceClassification.from_pretrained("distilbert-base-uncased")
         return tokenizer, model
     except Exception as e:
         st.error(f"Model Load Error: {e}")
@@ -34,24 +31,35 @@ tokenizer, model = load_model()
 def classify_query(text):
     if not tokenizer or not model:
         return "Error loading model"
-    inputs = tokenizer(text, return_tensors="pt", truncation=True, max_length=512)
-    outputs = model(**inputs)
-    probs = softmax(outputs.logits, dim=1)
-    categories = ["General", "Safety", "Quality", "Efficacy", "Miscellaneous"]
-    return categories[torch.argmax(probs).item()]
+    try:
+        inputs = tokenizer(text, return_tensors="pt", truncation=True, max_length=512)
+        outputs = model(**inputs)
+        probs = softmax(outputs.logits, dim=1)
+        categories = ["General", "Safety", "Quality", "Efficacy", "Miscellaneous"]
+        return categories[torch.argmax(probs).item()]
+    except Exception as e:
+        st.error(f"Query Classification Error: {e}")
+        return "Error processing query"
 
 # =============================
 # Load Guidelines JSON
 # =============================
 def load_guideline_data():
     path = "ich_guidelines_full_combined.json"
-    if not os.path.exists(path):
+    try:
+        if not os.path.exists(path):
+            st.error(f"JSON file not found at {path}")
+            return []
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        st.error(f"JSON Load Error: {e}")
         return []
-    with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
 
 def search_guidelines(query):
     data = load_guideline_data()
+    if not data:
+        return "⚠️ No guidelines loaded due to JSON error."
     q = query.lower()
     results = []
 
@@ -83,11 +91,15 @@ def search_guidelines(query):
 # Wiki Fallback Search (Optional)
 # =============================
 def fetch_online_data(query):
-    url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{query.replace(' ', '_')}"
-    r = requests.get(url)
-    if r.status_code == 200:
-        return r.json().get("extract", "No data found.")
-    return "🌐 No Wikipedia article found."
+    try:
+        url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{query.replace(' ', '_')}"
+        r = requests.get(url)
+        if r.status_code == 200:
+            return r.json().get("extract", "No data found.")
+        return "🌐 No Wikipedia article found."
+    except Exception as e:
+        st.error(f"Wikipedia Fetch Error: {e}")
+        return "🌐 Error fetching Wikipedia data."
 
 # =============================
 # Time-Based Greeting
@@ -99,7 +111,6 @@ def get_greeting():
 # =============================
 # Streamlit App UI
 # =============================
-st.set_page_config(page_title="ICH Guidelines Chatbot", layout="centered")
 st.title("🤖 Cosmos – Your ICH Guidelines Assistant")
 st.markdown("Type your query below in English or Hinglish to explore ICH, CTD, dossier rules & more.")
 
@@ -107,11 +118,12 @@ st.markdown("Type your query below in English or Hinglish to explore ICH, CTD, d
 with st.sidebar:
     st.header("About")
     st.markdown("""
-Hi! I’m **Kailash Kothari**, the developer of this chatbot.  
-This tool helps you quickly understand the right **ICH guidelines** for dossier preparation.
+**Developed by Kailash Kothari**  
+Welcome to **Cosmos**, your go-to assistant for navigating **ICH guidelines** with ease!  
 
-Whether it's **Q-Series**, **E-Series**, **eCTD**, or **Bioequivalence** — just ask and I’ll guide you.  
-I’ve built this to simplify regulatory work with AI 🚀
+This AI-powered chatbot is designed to simplify regulatory processes, helping you prepare dossiers, understand **eCTD**, and apply **Q-Series**, **E-Series**, or **Bioequivalence** guidelines. Whether you're a beginner or a seasoned professional, Cosmos delivers clear, accurate answers to streamline your regulatory journey. 🚀  
+
+Have questions? Just ask, and let’s master compliance together!
 """)
 
 # Chat Clearing

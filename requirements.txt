@@ -22,3 +22,8 @@ torch
 textblob
 pymupdf
 pandas
+streamlit 
+transformers 
+torch requests 
+fuzzywuzzy 
+python-Levenshtein

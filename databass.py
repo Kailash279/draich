@@ -18,7 +18,7 @@ def update_memory(question, answer):
     with open(MEMORY_FILE, "w") as f:
         json.dump(memory, f)
 def load_data():
-    json_path = "ich_guidelines_full_combined.json"
+    json_path = "ichich_guidelines_full_combined.json"
     if not os.path.exists(json_path):
         return []
 

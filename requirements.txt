@@ -16,3 +16,9 @@ requests
 streamlit
 requests
 textract
+streamlit
+transformers
+torch
+textblob
+pymupdf
+pandas

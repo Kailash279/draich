@@ -7,6 +7,15 @@ from transformers import BertTokenizer, BertForSequenceClassification
 from torch.nn.functional import softmax
 import torch
 
+import streamlit as st
+from transformers import BertTokenizer, BertForSequenceClassification
+# your other imports...
+
+# ✅ This must be the first Streamlit command
+st.set_page_config(page_title="ICH Guidelines Chatbot", layout="centered")
+
+# Now rest of your Streamlit app
+st.title("ICH Guidelines Chatbot")
 # =============================
 # Load BERT Model (Fallback safe)
 # =============================

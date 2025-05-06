@@ -1,7 +1,22 @@
 import json
 import os
 import re
+import os
+import json
 
+MEMORY_FILE = "memory.json"
+
+def load_memory():
+    if os.path.exists(MEMORY_FILE):
+        with open(MEMORY_FILE, "r") as f:
+            return json.load(f)
+    return {}
+
+def update_memory(question, answer):
+    memory = load_memory()
+    memory[question] = answer
+    with open(MEMORY_FILE, "w") as f:
+        json.dump(memory, f)
 def load_data():
     json_path = "ich_guidelines_full_combined.json"
     if not os.path.exists(json_path):

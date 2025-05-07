@@ -6,12 +6,14 @@ from datetime import datetime
 from transformers import BertTokenizer, BertForSequenceClassification
 from torch.nn.functional import softmax
 import torch
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, filename="app.log")
+logger = logging.getLogger(__name__)
 
 # ✅ This must be the first Streamlit command
 st.set_page_config(page_title="ICH Guidelines Chatbot", layout="centered")
-
-# Now rest of your Streamlit app
-st.title("ICH Guidelines Chatbot")
 
 # =============================
 # Load BERT Model (Fallback safe)
@@ -20,40 +22,61 @@ st.title("ICH Guidelines Chatbot")
 def load_model():
     try:
         tokenizer = BertTokenizer.from_pretrained("distilbert-base-uncased")
-        model = BertForSequenceClassification.from_pretrained("distilbert-base-uncased")
+        model = BertForSequenceClassification.from_pretrained(
+            "distilbert-base-uncased", num_labels=5
+        )
+        logger.info("BERT model loaded successfully")
         return tokenizer, model
     except Exception as e:
-        st.error(f"Model Load Error: {e}")
+        logger.error(f"Failed to load BERT model: {e}")
+        st.error(f"Failed to load BERT model: {e}. Using fallback classification.")
         return None, None
 
-tokenizer, model = load_model()
+with st.spinner("Loading BERT model..."):
+    tokenizer, model = load_model()
 
 def classify_query(text):
     if not tokenizer or not model:
-        return "Error loading model"
+        text = text.lower()
+        if any(k in text for k in ["safety", "risk", "toxicology"]):
+            return "Safety"
+        elif any(k in text for k in ["quality", "manufacturing", "stability"]):
+            return "Quality"
+        elif any(k in text for k in ["efficacy", "clinical", "bioequivalence"]):
+            return "Efficacy"
+        elif any(k in text for k in ["general", "overview", "introduction"]):
+            return "General"
+        else:
+            return "Miscellaneous"
     try:
         inputs = tokenizer(text, return_tensors="pt", truncation=True, max_length=512)
-        outputs = model(**inputs)
+        with torch.no_grad():
+            outputs = model(**inputs)
         probs = softmax(outputs.logits, dim=1)
         categories = ["General", "Safety", "Quality", "Efficacy", "Miscellaneous"]
         return categories[torch.argmax(probs).item()]
     except Exception as e:
+        logger.error(f"Query Classification Error: {e}")
         st.error(f"Query Classification Error: {e}")
-        return "Error processing query"
+        return "Miscellaneous"
 
 # =============================
 # Load Guidelines JSON
 # =============================
 def load_guideline_data():
-    path = "ich_guidelines_full_combined.json"
+    path = os.path.join(os.path.dirname(__file__), "ich_guidelines_full_combined.json")
     try:
         if not os.path.exists(path):
-            st.error(f"JSON file not found at {path}")
+            st.error(f"JSON file not found at {path}. Please ensure the file exists.")
+            logger.error(f"JSON file not found at {path}")
             return []
         with open(path, "r", encoding="utf-8") as f:
-            return json.load(f)
+            data = json.load(f)
+            logger.info("JSON file loaded successfully")
+            return data
     except Exception as e:
-        st.error(f"JSON Load Error: {e}")
+        logger.error(f"Failed to load JSON file: {e}")
+        st.error(f"Failed to load JSON file: {e}")
         return []
 
 def search_guidelines(query):
@@ -64,15 +87,15 @@ def search_guidelines(query):
     results = []
 
     for g in data:
-        if (q in g.get("title", "").lower() or
-            q in g.get("code", "").lower() or
-            q in g.get("purpose", "").lower() or
-            q in g.get("for_beginners", "").lower()):
-            
+        if any(
+            q in field.lower()
+            for field in [g.get("title", ""), g.get("code", ""), g.get("purpose", ""), g.get("for_beginners", "")]
+        ):
             subs = g.get("sub_guidelines", [])
-            subs_text = "\n".join([f"- {s['code']}: {s['title']}" for s in subs]) if subs else "None"
+            subs_text = "\n".join(f"- {s['code']}: {s['title']}" for s in subs) if subs else "None"
 
-            results.append(f"""
+            results.append(
+                f"""
 ### 📘 {g['code']} – {g['title']}
 **Category:** {g['category']}  
 **CTD Section:** {g['ctd_section']}  
@@ -83,23 +106,31 @@ def search_guidelines(query):
 🧒 **Beginner Tip:** {g['for_beginners']}  
 🔗 **Sub-Guidelines:**  
 {subs_text}
-""")
+"""
+            )
 
     return "\n---\n".join(results) if results else "⚠️ No matching guidelines found."
 
 # =============================
-# Wiki Fallback Search (Optional)
+# Wiki Fallback Search
 # =============================
 def fetch_online_data(query):
     try:
         url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{query.replace(' ', '_')}"
-        r = requests.get(url)
+        r = requests.get(url, timeout=5)
         if r.status_code == 200:
+            logger.info(f"Wikipedia API call successful for query: {query}")
             return r.json().get("extract", "No data found.")
-        return "🌐 No Wikipedia article found."
-    except Exception as e:
-        st.error(f"Wikipedia Fetch Error: {e}")
-        return "🌐 Error fetching Wikipedia data."
+        elif r.status_code == 404:
+            logger.warning(f"Wikipedia article not found for query: {query}")
+            return "🌐 No Wikipedia article found for this query."
+        else:
+            logger.error(f"Wikipedia API returned status {r.status_code} for query: {query}")
+            return f"🌐 Wikipedia API returned status {r.status_code}."
+    except requests.RequestException as e:
+        logger.error(f"Failed to fetch Wikipedia data: {e}")
+        st.error(f"Failed to fetch Wikipedia data: {e}")
+        return "🌐 Unable to connect to Wikipedia."
 
 # =============================
 # Time-Based Greeting
@@ -107,6 +138,22 @@ def fetch_online_data(query):
 def get_greeting():
     h = datetime.now().hour
     return "Good Morning ☀️" if h < 12 else "Good Afternoon ☀️" if h < 18 else "Good Evening 🌙"
+
+# =============================
+# Hinglish Preprocessing
+# =============================
+def preprocess_query(query):
+    hinglish_map = {
+        "dawai": "medicine",
+        "nirdesh": "guideline",
+        "suraksha": "safety",
+        "gunvatta": "quality",
+        "prabhav": "efficacy"
+    }
+    query = query.lower()
+    for hinglish, english in hinglish_map.items():
+        query = query.replace(hinglish, english)
+    return query
 
 # =============================
 # Streamlit App UI
@@ -129,7 +176,7 @@ Have questions? Just ask, and let’s master compliance together!
 # Chat Clearing
 if st.button("🧹 Clear Chat"):
     st.session_state.messages = []
-    st.experimental_rerun()
+    st.rerun()
 
 # Chat history
 if "messages" not in st.session_state:
@@ -141,17 +188,19 @@ for m in st.session_state.messages:
 
 # Chat input
 if prompt := st.chat_input("Ask anything about ICH, dossier, eCTD..."):
+    processed_prompt = preprocess_query(prompt)
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.write(prompt)
 
-    greeting = get_greeting()
-    category = classify_query(prompt)
-    local = search_guidelines(prompt)
-    online = fetch_online_data(prompt)
+    with st.spinner("Searching guidelines..."):
+        greeting = get_greeting()
+        category = classify_query(processed_prompt)
+        local = search_guidelines(processed_prompt)
+        online = fetch_online_data(processed_prompt)
 
-    response = f"{greeting}\n\n**Category:** `{category}`\n\n**Guideline Info:**\n{local}\n\n**Wikipedia:**\n{online}"
+        response = f"{greeting}\n\n**Category:** `{category}`\n\n**Guideline Info:**\n{local}\n\n**Wikipedia:**\n{online}"
 
-    st.session_state.messages.append({"role": "assistant", "content": response})
-    with st.chat_message("assistant"):
-        st.write(response)
+        st.session_state.messages.append({"role": "assistant", "content": response})
+        with st.chat_message("assistant"):
+            st.write(response)

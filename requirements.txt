@@ -1,29 +1,21 @@
-streamlit
-openai
-numpy
-pandas
-scikit-learn
-transformers
-torch
-nltk
-PyPDF2
-nltk
-streamlit
-streamlit
-transformers
-torch
-requests
-streamlit
-requests
-textract
-streamlit
-transformers
-torch
-textblob
-pymupdf
-pandas
-streamlit 
-transformers 
-torch requests 
-fuzzywuzzy 
-python-Levenshtein
+# Web interface for app.py (ICH Guidelines Chatbot)
+streamlit==1.38.0
+
+# BERT model for query classification in app.py
+transformers==4.44.2
+
+# PyTorch for transformers in app.py
+torch==2.4.1
+
+# HTTP requests for Wikipedia API in app.py
+requests==2.32.3
+
+# Wikipedia API for RL_GEN_AI_1.0.py
+wikipedia-api==0.7.1
+
+# Optional: Uncomment below if adding fuzzy search (e.g., for databass.py or app.py)
+# fuzzywuzzy==0.18.0
+# python-Levenshtein==0.25.1
+
+# Optional: Uncomment below if adding NLP preprocessing (e.g., for app.py or databass.py)
+# nltk==3.9.1

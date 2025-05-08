@@ -104,9 +104,11 @@ def classify_query(text):
 # =============================
 # Load Guidelines JSON
 # =============================
+@st.cache_data
 def load_guideline_data():
-    path = os.path.join(os.path.dirname(__file__), "ich_guidelines_full_combined.json")
     try:
+        # Use relative path for Streamlit Cloud
+        path = "ich_guidelines_full_combined.json"
         if not os.path.exists(path):
             st.error(f"JSON file not found at {path}. Please ensure the file exists.")
             logger.error(f"JSON file not found at {path}")

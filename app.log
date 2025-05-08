@@ -41,3 +41,30 @@
 **********************************************************************
 
 2025-05-08 21:27:46,573 - __main__ - INFO - Wikipedia API call successful for query: hii
+2025-05-08 23:22:14,789 - __main__ - INFO - Using device: cpu
+2025-05-08 23:22:16,666 - __main__ - INFO - BERT model loaded successfully
+2025-05-08 23:22:37,244 - __main__ - INFO - JSON file loaded successfully
+2025-05-08 23:22:37,246 - root - ERROR - Error in text preprocessing: 
+**********************************************************************
+  Resource [93mpunkt_tab[0m not found.
+  Please use the NLTK Downloader to obtain the resource:
+
+  [31m>>> import nltk
+  >>> nltk.download('punkt_tab')
+  [0m
+  For more information see: https://www.nltk.org/data.html
+
+  Attempted to load [93mtokenizers/punkt_tab/english/[0m
+
+  Searched in:
+    - 'C:\\Users\\kaila/nltk_data'
+    - 'C:\\Users\\kaila\\AppData\\Local\\Programs\\Python\\Python310\\nltk_data'
+    - 'C:\\Users\\kaila\\AppData\\Local\\Programs\\Python\\Python310\\share\\nltk_data'
+    - 'C:\\Users\\kaila\\AppData\\Local\\Programs\\Python\\Python310\\lib\\nltk_data'
+    - 'C:\\Users\\kaila\\AppData\\Roaming\\nltk_data'
+    - 'C:\\nltk_data'
+    - 'D:\\nltk_data'
+    - 'E:\\nltk_data'
+**********************************************************************
+
+2025-05-08 23:22:38,828 - __main__ - WARNING - Wikipedia article not found for query: product development report

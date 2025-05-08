@@ -7,13 +7,31 @@ from transformers import BertTokenizer, BertForSequenceClassification
 from torch.nn.functional import softmax
 import torch
 import logging
+import sys
+from nlp_utils import (
+    preprocess_text,
+    extract_keywords,
+    find_similar_guidelines,
+    analyze_query_intent
+)
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, filename="app.log")
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler("app.log"),
+        logging.StreamHandler(sys.stdout)
+    ]
+)
 logger = logging.getLogger(__name__)
 
 # ✅ This must be the first Streamlit command
-st.set_page_config(page_title="ICH Guidelines Chatbot", layout="centered")
+st.set_page_config(
+    page_title="ICH Guidelines Chatbot",
+    layout="centered",
+    initial_sidebar_state="expanded"
+)
 
 # =============================
 # Load BERT Model (Fallback safe)
@@ -21,22 +39,38 @@ st.set_page_config(page_title="ICH Guidelines Chatbot", layout="centered")
 @st.cache_resource
 def load_model():
     try:
+        # Check if CUDA is available
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        logger.info(f"Using device: {device}")
+        
         tokenizer = BertTokenizer.from_pretrained("distilbert-base-uncased")
         model = BertForSequenceClassification.from_pretrained(
-            "distilbert-base-uncased", num_labels=5
-        )
+            "distilbert-base-uncased",
+            num_labels=5
+        ).to(device)
+        
         logger.info("BERT model loaded successfully")
-        return tokenizer, model
+        return tokenizer, model, device
     except Exception as e:
         logger.error(f"Failed to load BERT model: {e}")
         st.error(f"Failed to load BERT model: {e}. Using fallback classification.")
-        return None, None
+        return None, None, None
 
-with st.spinner("Loading BERT model..."):
-    tokenizer, model = load_model()
+# Initialize session state for model
+if "model_loaded" not in st.session_state:
+    st.session_state.model_loaded = False
+
+# Load model only once
+if not st.session_state.model_loaded:
+    with st.spinner("Loading BERT model..."):
+        tokenizer, model, device = load_model()
+        st.session_state.tokenizer = tokenizer
+        st.session_state.model = model
+        st.session_state.device = device
+        st.session_state.model_loaded = True
 
 def classify_query(text):
-    if not tokenizer or not model:
+    if not st.session_state.tokenizer or not st.session_state.model:
         text = text.lower()
         if any(k in text for k in ["safety", "risk", "toxicology"]):
             return "Safety"
@@ -49,9 +83,16 @@ def classify_query(text):
         else:
             return "Miscellaneous"
     try:
-        inputs = tokenizer(text, return_tensors="pt", truncation=True, max_length=512)
+        inputs = st.session_state.tokenizer(
+            text,
+            return_tensors="pt",
+            truncation=True,
+            max_length=512
+        ).to(st.session_state.device)
+        
         with torch.no_grad():
-            outputs = model(**inputs)
+            outputs = st.session_state.model(**inputs)
+        
         probs = softmax(outputs.logits, dim=1)
         categories = ["General", "Safety", "Quality", "Efficacy", "Miscellaneous"]
         return categories[torch.argmax(probs).item()]
@@ -83,33 +124,93 @@ def search_guidelines(query):
     data = load_guideline_data()
     if not data:
         return "⚠️ No guidelines loaded due to JSON error."
-    q = query.lower()
+    
+    # Check if data has the correct structure
+    if "guidelines" not in data:
+        logger.error("JSON data does not contain 'guidelines' key")
+        return "⚠️ Invalid data structure in guidelines file."
+    
+    # Preprocess the query
+    processed_query = preprocess_text(query)
+    
+    # Extract keywords from the query
+    keywords = extract_keywords(query)
+    
+    # Analyze query intent
+    intent = analyze_query_intent(query)
+    
+    # Find similar guidelines using semantic similarity
+    similar_guidelines = find_similar_guidelines(processed_query, data["guidelines"])
+    
     results = []
+    
+    # Add keyword-based results
+    for g in data["guidelines"]:
+        try:
+            # Get all searchable fields with safe defaults
+            searchable_fields = [
+                str(g.get("title", "")),
+                str(g.get("code", "")),
+                str(g.get("purpose", "")),
+                str(g.get("for_beginners", ""))
+            ]
+            
+            # Check if any keyword matches
+            if any(keyword.lower() in ' '.join(searchable_fields).lower() for keyword in keywords):
+                subs = g.get("sub_guidelines", [])
+                subs_text = "\n".join(f"- {s.get('code', 'N/A')}: {s.get('title', 'N/A')}" for s in subs) if subs else "None"
 
-    for g in data:
-        if any(
-            q in field.lower()
-            for field in [g.get("title", ""), g.get("code", ""), g.get("purpose", ""), g.get("for_beginners", "")]
-        ):
-            subs = g.get("sub_guidelines", [])
-            subs_text = "\n".join(f"- {s['code']}: {s['title']}" for s in subs) if subs else "None"
+                results.append(
+                    f"""
+### 📘 {g.get('code', 'N/A')} – {g.get('title', 'N/A')}
+**Category:** {g.get('category', 'N/A')}  
+**CTD Section:** {g.get('ctd_section', 'N/A')}  
+**Introduced:** {g.get('introduced', 'N/A')}
 
-            results.append(
-                f"""
-### 📘 {g['code']} – {g['title']}
-**Category:** {g['category']}  
-**CTD Section:** {g['ctd_section']}  
-**Introduced:** {g['introduced']}
-
-🔍 **Purpose:** {g['purpose']}  
-🧪 **Used For:** {g['used_for']}  
-🧒 **Beginner Tip:** {g['for_beginners']}  
+🔍 **Purpose:** {g.get('purpose', 'N/A')}  
+🧪 **Used For:** {g.get('used_for', 'N/A')}  
+🧒 **Beginner Tip:** {g.get('for_beginners', 'N/A')}  
 🔗 **Sub-Guidelines:**  
 {subs_text}
 """
-            )
+                )
+        except Exception as e:
+            logger.error(f"Error processing guideline entry: {e}")
+            continue
+    
+    # Add semantically similar results
+    for guideline, similarity in similar_guidelines:
+        if similarity > 0.3:  # Only include highly similar results
+            g = guideline
+            subs = g.get("sub_guidelines", [])
+            subs_text = "\n".join(f"- {s.get('code', 'N/A')}: {s.get('title', 'N/A')}" for s in subs) if subs else "None"
+            
+            results.append(
+                f"""
+### 📘 {g.get('code', 'N/A')} – {g.get('title', 'N/A')}
+**Category:** {g.get('category', 'N/A')}  
+**CTD Section:** {g.get('ctd_section', 'N/A')}  
+**Introduced:** {g.get('introduced', 'N/A')}
 
-    return "\n---\n".join(results) if results else "⚠️ No matching guidelines found."
+🔍 **Purpose:** {g.get('purpose', 'N/A')}  
+🧪 **Used For:** {g.get('used_for', 'N/A')}  
+🧒 **Beginner Tip:** {g.get('for_beginners', 'N/A')}  
+🔗 **Sub-Guidelines:**  
+{subs_text}
+
+*Similarity Score: {similarity:.2f}*
+"""
+            )
+    
+    # Add query analysis information
+    analysis_info = f"""
+### 🔍 Query Analysis
+**Keywords:** {', '.join(keywords)}
+**Intent:** {'Question' if intent['is_question'] else 'Statement'}
+**Main Topics:** {', '.join(intent['key_topics'])}
+"""
+    
+    return analysis_info + "\n---\n" + "\n---\n".join(results) if results else "⚠️ No matching guidelines found."
 
 # =============================
 # Wiki Fallback Search
@@ -170,7 +271,7 @@ Welcome to **Cosmos**, your go-to assistant for navigating **ICH guidelines** wi
 
 This AI-powered chatbot is designed to simplify regulatory processes, helping you prepare dossiers, understand **eCTD**, and apply **Q-Series**, **E-Series**, or **Bioequivalence** guidelines. Whether you're a beginner or a seasoned professional, Cosmos delivers clear, accurate answers to streamline your regulatory journey. 🚀  
 
-Have questions? Just ask, and let’s master compliance together!
+Have questions? Just ask, and let's master compliance together!
 """)
 
 # Chat Clearing

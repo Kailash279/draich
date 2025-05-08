@@ -5,17 +5,22 @@ streamlit==1.38.0
 transformers==4.44.2
 
 # PyTorch for transformers in app.py
-torch==2.4.1
+torch==2.1.0
+numpy>=1.24.0
+pandas>=2.0.0
 
 # HTTP requests for Wikipedia API in app.py
-requests==2.32.3
+requests==2.31.0
 
 # Wikipedia API for RL_GEN_AI_1.0.py
 wikipedia-api==0.7.1
 
-# Optional: Uncomment below if adding fuzzy search (e.g., for databass.py or app.py)
-# fuzzywuzzy==0.18.0
-# python-Levenshtein==0.25.1
+# NLP packages
+nltk==3.9.1
+spacy==3.7.2
+scikit-learn==1.4.0
+sentence-transformers==2.5.1
 
-# Optional: Uncomment below if adding NLP preprocessing (e.g., for app.py or databass.py)
-# nltk==3.9.1
+# Optional: Uncomment below if adding fuzzy search (e.g., for databass.py or app.py)
+fuzzywuzzy==0.18.0
+python-Levenshtein==0.25.1

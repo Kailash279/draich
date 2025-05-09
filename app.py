@@ -1,4 +1,4 @@
-import streamlit as st
+from flask import Flask, render_template, request, jsonify
 import json
 import os
 import requests
@@ -26,20 +26,11 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# ✅ This must be the first Streamlit command
-st.set_page_config(
-    page_title="ICH Guidelines Chatbot",
-    layout="centered",
-    initial_sidebar_state="expanded"
-)
+app = Flask(__name__)
 
-# =============================
-# Load BERT Model (Fallback safe)
-# =============================
-@st.cache_resource
+# Load BERT Model
 def load_model():
     try:
-        # Check if CUDA is available
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         logger.info(f"Using device: {device}")
         
@@ -53,24 +44,13 @@ def load_model():
         return tokenizer, model, device
     except Exception as e:
         logger.error(f"Failed to load BERT model: {e}")
-        st.error(f"Failed to load BERT model: {e}. Using fallback classification.")
         return None, None, None
 
-# Initialize session state for model
-if "model_loaded" not in st.session_state:
-    st.session_state.model_loaded = False
-
-# Load model only once
-if not st.session_state.model_loaded:
-    with st.spinner("Loading BERT model..."):
-        tokenizer, model, device = load_model()
-        st.session_state.tokenizer = tokenizer
-        st.session_state.model = model
-        st.session_state.device = device
-        st.session_state.model_loaded = True
+# Initialize model
+tokenizer, model, device = load_model()
 
 def classify_query(text):
-    if not st.session_state.tokenizer or not st.session_state.model:
+    if not tokenizer or not model:
         text = text.lower()
         if any(k in text for k in ["safety", "risk", "toxicology"]):
             return "Safety"
@@ -83,22 +63,21 @@ def classify_query(text):
         else:
             return "Miscellaneous"
     try:
-        inputs = st.session_state.tokenizer(
+        inputs = tokenizer(
             text,
             return_tensors="pt",
             truncation=True,
             max_length=512
-        ).to(st.session_state.device)
+        ).to(device)
         
         with torch.no_grad():
-            outputs = st.session_state.model(**inputs)
+            outputs = model(**inputs)
         
         probs = softmax(outputs.logits, dim=1)
         categories = ["General", "Safety", "Quality", "Efficacy", "Miscellaneous"]
         return categories[torch.argmax(probs).item()]
     except Exception as e:
         logger.error(f"Query Classification Error: {e}")
-        st.error(f"Query Classification Error: {e}")
         return "Miscellaneous"
 
 # =============================
@@ -258,54 +237,30 @@ def preprocess_query(query):
         query = query.replace(hinglish, english)
     return query
 
-# =============================
-# Streamlit App UI
-# =============================
-st.title("🤖 Cosmos – Your ICH Guidelines Assistant")
-st.markdown("Type your query below in English or Hinglish to explore ICH, CTD, dossier rules & more.")
+@app.route('/')
+def home():
+    return render_template('index.html')
 
-# Sidebar
-with st.sidebar:
-    st.header("About")
-    st.markdown("""
-**Developed by Kailash Kothari**  
-Welcome to **Cosmos**, your go-to assistant for navigating **ICH guidelines** with ease!  
+@app.route('/api/chat', methods=['POST'])
+def chat():
+    data = request.json
+    query = data.get('query', '')
+    
+    if not query:
+        return jsonify({'error': 'No query provided'}), 400
+    
+    try:
+        category = classify_query(query)
+        response = search_guidelines(query)
+        return jsonify({
+            'category': category,
+            'response': response
+        })
+    except Exception as e:
+        logger.error(f"Error processing query: {e}")
+        return jsonify({'error': str(e)}), 500
 
-This AI-powered chatbot is designed to simplify regulatory processes, helping you prepare dossiers, understand **eCTD**, and apply **Q-Series**, **E-Series**, or **Bioequivalence** guidelines. Whether you're a beginner or a seasoned professional, Cosmos delivers clear, accurate answers to streamline your regulatory journey. 🚀  
-
-Have questions? Just ask, and let's master compliance together!
-""")
-
-# Chat Clearing
-if st.button("🧹 Clear Chat"):
-    st.session_state.messages = []
-    st.rerun()
-
-# Chat history
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-
-for m in st.session_state.messages:
-    with st.chat_message(m["role"]):
-        st.write(m["content"])
-
-# Chat input
-if prompt := st.chat_input("Ask anything about ICH, dossier, eCTD..."):
-    processed_prompt = preprocess_query(prompt)
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    with st.chat_message("user"):
-        st.write(prompt)
-
-    with st.spinner("Searching guidelines..."):
-        greeting = get_greeting()
-        category = classify_query(processed_prompt)
-        local = search_guidelines(processed_prompt)
-        online = fetch_online_data(processed_prompt)
-
-        response = f"{greeting}\n\n**Category:** `{category}`\n\n**Guideline Info:**\n{local}\n\n**Wikipedia:**\n{online}"
-
-        st.session_state.messages.append({"role": "assistant", "content": response})
-        with st.chat_message("assistant"):
-            st.write(response)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 10000)))
 
     

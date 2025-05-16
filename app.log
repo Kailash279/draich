@@ -68,3 +68,4 @@
 **********************************************************************
 
 2025-05-08 23:22:38,828 - __main__ - WARNING - Wikipedia article not found for query: product development report
+2025-05-16 22:25:59,416 - __main__ - ERROR - Failed to load BERT model: name 'torch' is not defined

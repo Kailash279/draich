@@ -70,18 +70,21 @@ def classify_query(text):
         return "Miscellaneous"
 
 def greet(name):
-    return "Hello " + name + "!!"
+    return f"Hello {name}!!"
 
-# Create Gradio interface
-demo = gr.Interface(
-    fn=greet,
-    inputs="text",
-    outputs="text",
-    title="ICH Guidelines Assistant",
-    description=" Hiii I AM Kailash Kothari, Welcome to the ICH Guidelines Assistant. Ask any questions about ICH guidelines."
-)
+# Set page title and header
+st.set_page_config(page_title="ICH Guidelines Assistant", page_icon="👋")
+st.title("ICH Guidelines Assistant")
+st.write("Hiii I AM Kailash Kothari, Welcome to the ICH Guidelines Assistant. Ask any questions about ICH guidelines.")
 
-if __name__ == "__main__":
-    demo.launch()
+# Create input field
+name = st.text_input("Enter your name")
+
+# Create submit button
+if st.button("Greet"):
+    if name:
+        st.write(greet(name))
+    else:
+        st.warning("Please enter your name")
 
     

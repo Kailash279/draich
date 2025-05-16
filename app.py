@@ -1,25 +1,10 @@
-
+import streamlit as st
 import json
 import os
 import requests
 from datetime import datetime
-from transformers import BertTokenizer, BertForSequenceClassification
-from torch.nn.functional import softmax
-import torch
 import logging
 import sys
-from nlp_utils import (
-    preprocess_text,
-    extract_keywords,
-    find_similar_guidelines,
-    analyze_query_intent
-)
-
-def greet(name):
-    return "Hello " + name + "!!"
-
-demo = gr.Interface(fn=greet, inputs="text", outputs="text")
-demo.launch()
 
 # Configure logging
 logging.basicConfig(

@@ -5,6 +5,9 @@ import requests
 from datetime import datetime
 import logging
 import sys
+import torch
+from transformers import BertTokenizer, BertForSequenceClassification
+from torch.nn.functional import softmax
 
 # Configure logging
 logging.basicConfig(
@@ -17,7 +20,9 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# ======================
 # Load BERT Model
+# ======================
 def load_model():
     try:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -26,18 +31,20 @@ def load_model():
         tokenizer = BertTokenizer.from_pretrained("distilbert-base-uncased")
         model = BertForSequenceClassification.from_pretrained(
             "distilbert-base-uncased",
-            num_labels=5
+            num_labels=5  # Just assumed — not trained!
         ).to(device)
         
-        logger.info("BERT model loaded successfully")
+        logger.info("✅ BERT model loaded")
         return tokenizer, model, device
     except Exception as e:
-        logger.error(f"Failed to load BERT model: {e}")
+        logger.error(f"❌ BERT Load Failed: {e}")
         return None, None, None
 
-# Initialize model
 tokenizer, model, device = load_model()
 
+# ======================
+# Classify Query Function
+# ======================
 def classify_query(text):
     if not tokenizer or not model:
         text = text.lower()
@@ -52,39 +59,34 @@ def classify_query(text):
         else:
             return "Miscellaneous"
     try:
-        inputs = tokenizer(
-            text,
-            return_tensors="pt",
-            truncation=True,
-            max_length=512
-        ).to(device)
-        
+        inputs = tokenizer(text, return_tensors="pt", truncation=True, max_length=512).to(device)
         with torch.no_grad():
             outputs = model(**inputs)
-        
         probs = softmax(outputs.logits, dim=1)
         categories = ["General", "Safety", "Quality", "Efficacy", "Miscellaneous"]
         return categories[torch.argmax(probs).item()]
     except Exception as e:
-        logger.error(f"Query Classification Error: {e}")
+        logger.error(f"❌ Classification Failed: {e}")
         return "Miscellaneous"
 
+# ======================
+# Greeting
+# ======================
 def greet(name):
     return f"Hello {name}!!"
 
-# Set page title and header
-st.set_page_config(page_title="ICH Guidelines Assistant", page_icon="👋")
-st.title("ICH Guidelines Assistant")
-st.write("Hiii I AM Kailash Kothari, Welcome to the ICH Guidelines Assistant. Ask any questions about ICH guidelines.")
+# ======================
+# Streamlit UI
+# ======================
+st.set_page_config(page_title="ICH Guidelines Assistant", page_icon="📘")
 
-# Create input field
+st.title("ICH Guidelines Assistant 🤖")
+st.write("👋 Hi, I'm **Kailash Kothari's Assistant** for ICH Guidelines. Ask anything related to Safety, Quality, Efficacy, and dossier preparation.")
+
 name = st.text_input("Enter your name")
 
-# Create submit button
 if st.button("Greet"):
     if name:
-        st.write(greet(name))
+        st.success(greet(name))
     else:
-        st.warning("Please enter your name")
-
-    
+        st.warning("Please enter your name.")

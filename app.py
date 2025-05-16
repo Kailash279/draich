@@ -1,4 +1,4 @@
-import gradio as gr
+
 import json
 import os
 import requests
@@ -14,7 +14,6 @@ from nlp_utils import (
     find_similar_guidelines,
     analyze_query_intent
 )
-import gradio as gr
 
 def greet(name):
     return "Hello " + name + "!!"

@@ -1,22 +1,37 @@
 # app.py
 
 import streamlit as st
-import torch
-from transformers import BertTokenizer, BertForSequenceClassification
-from torch.nn.functional import softmax
+import json
+import os
+import requests
 from datetime import datetime
 import logging
 import sys
+from transformers import BertTokenizer, BertForSequenceClassification
+from torch.nn.functional import softmax
+import torch
 
 # =========================
 # ✅ Logging Setup
 # =========================
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[logging.FileHandler("app.log"), logging.StreamHandler(sys.stdout)]
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler("app.log"),
+        logging.StreamHandler(sys.stdout)
+    ]
 )
 logger = logging.getLogger(__name__)
+
+def load_guidelines():
+    try:
+        with open("ich_guidelines_full_combined.json", "r", encoding="utf-8") as file:
+            data = json.load(file)
+            return data.get("guidelines", [])
+    except Exception as e:
+        logger.error(f"Error loading guidelines: {e}")
+        return []
 
 # =========================
 # ✅ Load BERT Model
@@ -25,79 +40,159 @@ logger = logging.getLogger(__name__)
 def load_model():
     try:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        logger.info(f"Using device: {device}")
+        
         tokenizer = BertTokenizer.from_pretrained("distilbert-base-uncased")
         model = BertForSequenceClassification.from_pretrained(
             "distilbert-base-uncased",
             num_labels=5
         ).to(device)
-        logger.info("✅ Model loaded on %s", device)
+        
+        logger.info("BERT model loaded successfully")
         return tokenizer, model, device
     except Exception as e:
-        logger.error("❌ Model loading failed: %s", e)
+        logger.error(f"Failed to load BERT model: {e}")
         return None, None, None
 
+# =========================
+# ✅ Initialize model and guidelines
+# =========================
 tokenizer, model, device = load_model()
+guidelines = load_guidelines()
+
+def find_relevant_guidelines(query):
+    query = query.lower()
+    relevant = []
+    
+    for guideline in guidelines:
+        # Search in multiple fields
+        if (query in guideline.get("title", "").lower() or
+            query in guideline.get("purpose", "").lower() or
+            query in guideline.get("used_for", "").lower() or
+            query in guideline.get("for_beginners", "").lower()):
+            relevant.append(guideline)
+    
+    return relevant
 
 # =========================
-# ✅ Classify User Input
+# ✅ Classify Query
 # =========================
 def classify_query(text):
-    categories = ["General", "Safety", "Quality", "Efficacy", "Miscellaneous"]
-    
     if not tokenizer or not model:
         text = text.lower()
-        if "safety" in text or "toxic" in text:
+        if any(k in text for k in ["safety", "risk", "toxicology"]):
             return "Safety"
-        elif "quality" in text or "stability" in text:
+        elif any(k in text for k in ["quality", "manufacturing", "stability"]):
             return "Quality"
-        elif "efficacy" in text or "clinical" in text:
+        elif any(k in text for k in ["efficacy", "clinical", "bioequivalence"]):
             return "Efficacy"
-        elif "overview" in text or "intro" in text:
+        elif any(k in text for k in ["general", "overview", "introduction"]):
             return "General"
-        return "Miscellaneous"
-
+        else:
+            return "Miscellaneous"
     try:
-        inputs = tokenizer(text, return_tensors="pt", truncation=True, max_length=512).to(device)
+        inputs = tokenizer(
+            text,
+            return_tensors="pt",
+            truncation=True,
+            max_length=512
+        ).to(device)
+        
         with torch.no_grad():
             outputs = model(**inputs)
+        
         probs = softmax(outputs.logits, dim=1)
+        categories = ["General", "Safety", "Quality", "Efficacy", "Miscellaneous"]
         return categories[torch.argmax(probs).item()]
     except Exception as e:
-        logger.error("❌ Classification failed: %s", e)
+        logger.error(f"Query Classification Error: {e}")
         return "Miscellaneous"
-
-# =========================
-# ✅ Greeting
-# =========================
-def greet(name):
-    return f"Hello {name}!! 👋 Welcome to ICH Guidelines Assistant."
 
 # =========================
 # ✅ Streamlit App UI
 # =========================
-st.set_page_config(page_title="ICH Guidelines Assistant", layout="centered", page_icon="📘")
+st.set_page_config(page_title="ICH Guidelines Assistant", page_icon="📘")
 st.title("ICH Guidelines Assistant 🤖")
-st.write("Ask your questions related to **ICH Guidelines** — Quality, Safety, Efficacy, etc.")
-
-# User Name Input
-name = st.text_input("Enter your name")
-
-if st.button("Greet Me"):
-    if name:
-        st.success(greet(name))
-    else:
-        st.warning("Please enter your name first.")
-
-# User Query
-user_input = st.text_input("🔎 Type your ICH query here...")
-
-if user_input:
-    st.info("⏳ Classifying your query...")
-    category = classify_query(user_input)
-    st.success(f"📂 Predicted Category: **{category}**")
+st.write("Hi, I am **Kailash Kothari**. Welcome to the ICH Guidelines Assistant. Ask any question about ICH guidelines!")
 
 # =========================
-# ✅ Sidebar - About Section
+# ✅ Chat Memory Init
+# =========================
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+if "user_input" not in st.session_state:
+    st.session_state.user_input = ""
+
+# =========================
+# ✅ Chat History Display
+# =========================
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+# =========================
+# ✅ Chat Input Area
+# =========================
+st.markdown("""
+<style>
+    .stButton>button {
+        background-color: #4CAF50;
+        color: white;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        margin-left: 10px;
+    }
+    .stButton>button:hover {
+        background-color: #45a049;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+col1, col2 = st.columns([6, 1])
+
+with col1:
+    st.session_state.user_input = st.text_input("Type your question here...", key="input_box", label_visibility="collapsed", value=st.session_state.user_input)
+
+with col2:
+    if st.button("➤", key="send_button"):
+        user_query = st.session_state.user_input.strip()
+        if user_query:
+            # Add user message to chat history
+            st.session_state.messages.append({"role": "user", "content": user_query})
+            
+            # Find relevant guidelines
+            relevant_guidelines = find_relevant_guidelines(user_query)
+            
+            # Classify the query
+            category = classify_query(user_query)
+            
+            # Prepare response
+            if relevant_guidelines:
+                response = f"**Category:** {category}\n\n**Relevant Guidelines:**\n\n"
+                for guideline in relevant_guidelines:
+                    response += f"### 📘 {guideline['code']} - {guideline['title']}\n"
+                    response += f"**Purpose:** {guideline['purpose']}\n"
+                    response += f"**Used For:** {guideline['used_for']}\n"
+                    response += f"**Beginner Tip:** {guideline['for_beginners']}\n\n"
+            else:
+                response = f"**Category:** {category}\n\nI couldn't find specific guidelines matching your query. Please try rephrasing or asking about a different aspect of ICH guidelines."
+            
+            # Add assistant response to chat history
+            st.session_state.messages.append({"role": "assistant", "content": response})
+            
+            # Clear the input
+            st.session_state.user_input = ""
+            
+            # Rerun to update the chat
+            st.experimental_rerun()
+        else:
+            st.warning("Please enter a question!")
+
+# =========================
+# ✅ Sidebar - About
 # =========================
 with st.sidebar:
     st.header("📘 About This App")

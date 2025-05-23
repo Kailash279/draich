@@ -86,8 +86,8 @@ tokenizer, model, device = load_model()
 guidelines = load_guidelines()
 
 # Streamlit UI setup
-st.set_page_config(page_title="ICH Guidelines Assistant", page_icon="📘")
-st.title("ICH Guidelines Assistant 🤖")
+st.set_page_config(page_title="ICH Guidelines Assistant", page_icon="\ud83d\udcd8")
+st.title("ICH Guidelines Assistant \ud83e\udd16")
 st.write("Hi, I am **Kailash Kothari**. Ask me anything about ICH guidelines!")
 
 if "messages" not in st.session_state:
@@ -107,7 +107,7 @@ with col1:
     st.session_state.user_input = st.text_input("Type your question here...", key="input_box", value=st.session_state.user_input, label_visibility="collapsed")
 
 with col2:
-    if st.button("➤", key="send_button"):
+    if st.button("\u27a4", key="send_button"):
         query = st.session_state.user_input.strip()
         if query:
             # Add user message
@@ -120,7 +120,7 @@ with col2:
             if relevant:
                 response = f"**Category:** {category}\n\n**Relevant Guidelines:**\n\n"
                 for g in relevant:
-                    response += f"### 📘 {g['code']} - {g['title']}\n"
+                    response += f"### \ud83d\udcd8 {g['code']} - {g['title']}\n"
                     response += f"**Purpose:** {g['purpose']}\n"
                     response += f"**Used For:** {g['used_for']}\n"
                     response += f"**Beginner Tip:** {g['for_beginners']}\n\n"

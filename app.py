@@ -69,7 +69,7 @@ This AI Assistant helps you understand and search through ICH Guidelines using:
 - 🌐 **Wikipedia Search** (for general pharma/biotech queries)
 - ♻️ **Reinforcement Learning Loop** (auto-learns from new user input)
 
-> Built with ❤️ by Kailash Kothari 
+> Built with ❤️ by Kailash Kothari  
 > Version: `ICH-GEN-AI v1.0`
 
 **Try asking:**
@@ -77,4 +77,4 @@ This AI Assistant helps you understand and search through ICH Guidelines using:
 - Tell me about Q8 guideline
 - Show safety guideline
 - What is bioequivalence?
-""")
+""")  # ✅ now properly closed

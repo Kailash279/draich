@@ -87,7 +87,8 @@ guidelines = load_guidelines()
 
 # Streamlit UI setup
 st.set_page_config(page_title="ICH Guidelines Assistant", page_icon="📘")
-st.title("ICH Guidelines Assistant \ud83e\udd16")
+st.title("ICH Guidelines Assistant 🤖")
+
 st.write("Hi, I am **Kailash Kothari**. Ask me anything about ICH guidelines!")
 
 if "messages" not in st.session_state:

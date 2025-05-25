@@ -65,7 +65,7 @@ with st.sidebar:
     st.markdown("""
 **ICH Guidelines Assistant 🤖**
 
-Hii i am Kialash Kothari the developer of this chatbot 
+Hii i am Kailash Kothari the developer of this chatbot 
 This AI Assistant helps you understand and search through ICH Guidelines using:
 
 - 🧠 **Memory-based recall** (saves previous Q&A for instant future replies)

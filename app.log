@@ -98,3 +98,4 @@
 2025-05-16 23:29:29,868 - __main__ - INFO - BERT model loaded successfully
 2025-05-17 23:53:20,636 - __main__ - INFO - Using device: cpu
 2025-05-17 23:53:22,935 - __main__ - INFO - BERT model loaded successfully
+INFO:RL_GEN_AI:Created memory directory: D:\DRA\rl_memory

@@ -2,9 +2,12 @@
 import streamlit as st
 import json
 from RL_GEN_AI import generate_dynamic_response
-from databass import load_guidelines_data, search_guidelines, save_to_memory, search_memory
-
-
+from databass import (
+    load_data as load_guidelines_data,
+    search_guidelines,
+    update_memory as save_to_memory,
+    load_memory as search_memory
+)
 # ========== Load Guidelines ==========
 @st.cache_resource(show_spinner=False)
 def load_data():
@@ -58,10 +61,11 @@ if query:
 
 # ========== Sidebar ==========
 with st.sidebar:
-    st.header("📘 About This Assistant")
+    st.header("📘 About This Assistant ")
     st.markdown("""
 **ICH Guidelines Assistant 🤖**
 
+Hii i am Kialash Kothari the developer of this chatbot 
 This AI Assistant helps you understand and search through ICH Guidelines using:
 
 - 🧠 **Memory-based recall** (saves previous Q&A for instant future replies)

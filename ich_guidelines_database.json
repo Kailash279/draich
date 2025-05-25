@@ -1,0 +1,256 @@
+{
+  "overview": {
+    "what_is_ich": "The International Council for Harmonisation (ICH) is a global initiative that brings together regulatory authorities and pharmaceutical industry representatives to develop harmonized guidelines for safe, effective, and high-quality medicines.",
+    "established": "1990",
+    "mission": "To achieve global harmonization for the development, registration, and post-market surveillance of medicines, ensuring safety, efficacy, and quality while optimizing resources.",
+    "members": ["US FDA", "EU EMA", "Japan PMDA", "Health Canada", "PhRMA", "EFPIA", "JPMA"],
+    "observers": ["WHO", "ASEAN", "others"],
+    "categories": ["Quality", "Safety", "Efficacy", "Multidisciplinary"]
+  },
+  "guidelines": {
+    "Quality": {
+      "description": "Focuses on technical aspects of drug substance, product, manufacturing, and quality control to ensure consistent quality.",
+      "guidelines": {
+        "Q1": {
+          "name": "Stability Testing",
+          "sub_guidelines": {
+            "Q1A(R2)": "Stability testing of new drug substances and products",
+            "Q1B": "Photostability testing",
+            "Q1C": "Stability for new dosage forms",
+            "Q1D": "Bracketing and matrixing designs",
+            "Q1E": "Evaluation of stability data"
+          },
+          "purpose": "Ensures drugs remain effective and safe during storage.",
+          "use": "Used in stability studies for regulatory submissions to determine shelf life and storage conditions.",
+          "last_updated": "2003 (Q1A-Q1E)"
+        },
+        "Q2": {
+          "name": "Analytical Validation",
+          "sub_guidelines": {
+            "Q2(R1)": "Validation of analytical procedures"
+          },
+          "purpose": "Provides guidance on validating analytical methods for accuracy, precision, and specificity.",
+          "use": "Ensures reliable and reproducible analytical methods for quality control.",
+          "last_updated": "2005"
+        },
+        "Q3": {
+          "name": "Impurities",
+          "sub_guidelines": {
+            "Q3A(R2)": "Impurities in new drug substances",
+            "Q3B(R2)": "Impurities in new drug products",
+            "Q3C(R7)": "Residual solvents",
+            "Q3D(R2)": "Elemental impurities"
+          },
+          "purpose": "Controls impurities in drug substances and products to ensure safety.",
+          "use": "Identifies, quantifies, and controls impurities, including degradation products.",
+          "last_updated": "2023 (Q3D R2)"
+        },
+        "Q8": {
+          "name": "Pharmaceutical Development",
+          "sub_guidelines": {
+            "Q8(R2)": "Quality by Design (QbD)"
+          },
+          "purpose": "Promotes a scientific and risk-based approach to drug development.",
+          "use": "Designs robust manufacturing processes and ensures consistent drug quality.",
+          "last_updated": "2009"
+        },
+        "Q9": {
+          "name": "Quality Risk Management",
+          "sub_guidelines": {
+            "Q9(R1)": "Revised quality risk management principles"
+          },
+          "purpose": "Provides tools for risk identification, assessment, and mitigation.",
+          "use": "Manages risks in manufacturing and quality control processes.",
+          "last_updated": "2023"
+        },
+        "Q10": {
+          "name": "Pharmaceutical Quality System",
+          "purpose": "Establishes a quality management system for the drug lifecycle.",
+          "use": "Ensures consistent quality throughout development and manufacturing.",
+          "last_updated": "2008"
+        },
+        "Q11": {
+          "name": "Development and Manufacture of Drug Substances",
+          "purpose": "Guidance for chemical and biotechnological drug substances.",
+          "use": "Supports development of robust drug substances.",
+          "last_updated": "2012"
+        },
+        "Q12": {
+          "name": "Lifecycle Management",
+          "purpose": "Manages post-approval changes and lifecycle.",
+          "use": "Facilitates regulatory flexibility for post-approval changes.",
+          "last_updated": "2019"
+        },
+        "Q13": {
+          "name": "Continuous Manufacturing",
+          "purpose": "Guidance for continuous manufacturing processes.",
+          "use": "Supports modern manufacturing techniques.",
+          "last_updated": "2023"
+        },
+        "Q14": {
+          "name": "Analytical Procedure Development",
+          "purpose": "Complements Q2 for analytical method development.",
+          "use": "Ensures robust analytical procedures.",
+          "last_updated": "2023"
+        }
+      }
+    },
+    "Safety": {
+      "description": "Focuses on non-clinical safety studies to assess risks like toxicity and carcinogenicity.",
+      "guidelines": {
+        "S1": {
+          "name": "Carcinogenicity Studies",
+          "purpose": "Assesses cancer risk of drugs.",
+          "use": "Used in preclinical safety evaluation.",
+          "last_updated": "2012"
+        },
+        "S2": {
+          "name": "Genotoxicity Testing",
+          "sub_guidelines": {
+            "S2(R1)": "Genotoxicity testing and data interpretation"
+          },
+          "purpose": "Evaluates potential for DNA damage.",
+          "use": "Ensures drugs are safe from genotoxic risks.",
+          "last_updated": "2011"
+        },
+        "S5": {
+          "name": "Reproductive Toxicology",
+          "sub_guidelines": {
+            "S5(R3)": "Detection of reproductive and developmental toxicity"
+          },
+          "purpose": "Assesses effects on reproduction and development.",
+          "use": "Ensures drug safety for reproductive health.",
+          "last_updated": "2020"
+        },
+        "S9": {
+          "name": "Non-clinical Evaluation for Anticancer Drugs",
+          "purpose": "Safety evaluation for oncology drugs.",
+          "use": "Supports development of anticancer therapies.",
+          "last_updated": "2009"
+        }
+      }
+    },
+    "Efficacy": {
+      "description": "Covers design, conduct, safety, and reporting of clinical trials.",
+      "guidelines": {
+        "E2": {
+          "name": "Pharmacovigilance",
+          "sub_guidelines": {
+            "E2A": "Clinical safety data management",
+            "E2B(R3)": "Electronic transmission of adverse event reports",
+            "E2C(R2)": "Periodic benefit-risk evaluation reports"
+          },
+          "purpose": "Manages adverse event reporting and safety monitoring.",
+          "use": "Ensures ongoing safety in clinical trials and post-market.",
+          "last_updated": "2016 (E2B R3)"
+        },
+        "E6": {
+          "name": "Good Clinical Practice",
+          "sub_guidelines": {
+            "E6(R2)": "Integrated addendum to GCP"
+          },
+          "purpose": "Ethical and scientific standards for clinical trials.",
+          "use": "Ensures trial integrity and patient safety.",
+          "last_updated": "2016"
+        },
+        "E8": {
+          "name": "General Considerations for Clinical Trials",
+          "sub_guidelines": {
+            "E8(R1)": "Revised clinical trial design principles"
+          },
+          "purpose": "Provides principles for clinical trial design.",
+          "use": "Ensures robust and scientific trial designs.",
+          "last_updated": "2021"
+        },
+        "E9": {
+          "name": "Statistical Principles for Clinical Trials",
+          "sub_guidelines": {
+            "E9(R1)": "Estimands and sensitivity analysis"
+          },
+          "purpose": "Guides statistical methods in clinical trials.",
+          "use": "Ensures reliable statistical analysis.",
+          "last_updated": "2019"
+        }
+      }
+    },
+    "Multidisciplinary": {
+      "description": "Covers cross-cutting topics like regulatory submissions and terminology.",
+      "guidelines": {
+        "M1": {
+          "name": "MedDRA Terminology",
+          "purpose": "Standardized medical terminology for regulatory communication.",
+          "use": "Ensures consistent adverse event reporting.",
+          "last_updated": "Ongoing updates"
+        },
+        "M4": {
+          "name": "Common Technical Document (CTD)",
+          "sub_guidelines": {
+            "M4(R1)": "Organization of CTD",
+            "M4Q": "Quality module",
+            "M4S": "Safety module",
+            "M4E": "Efficacy module"
+          },
+          "purpose": "Standardized format for regulatory submissions.",
+          "use": "Streamlines global regulatory submissions.",
+          "last_updated": "2004"
+        },
+        "M7": {
+          "name": "Mutagenic Impurities",
+          "sub_guidelines": {
+            "M7(R2)": "Assessment and control of mutagenic impurities"
+          },
+          "purpose": "Controls DNA-reactive impurities.",
+          "use": "Ensures drug safety from mutagenic risks.",
+          "last_updated": "2021"
+        },
+        "M13": {
+          "name": "Bioequivalence for Generics",
+          "purpose": "Guidance for bioequivalence studies.",
+          "use": "Supports development of generic drugs.",
+          "last_updated": "2024"
+        }
+      }
+    }
+  },
+  "diagram": {
+    "textual_representation": [
+      "ICH Guidelines",
+      "├── Quality (Q)",
+      "│   ├── Q1: Stability (Q1A–Q1F)",
+      "│   ├── Q2: Analytical Validation (Q2R1)",
+      "│   ├── Q3: Impurities",
+      "│   │   ├── Q3A: Drug Substances",
+      "│   │   ├── Q3B: Drug Products",
+      "│   │   ├── Q3C: Residual Solvents",
+      "│   │   └── Q3D: Elemental Impurities",
+      "│   ├── Q8: Pharmaceutical Development",
+      "│   ├── Q9R1: Quality Risk Management",
+      "│   ├── Q10: Pharmaceutical Quality System",
+      "│   ├── Q11: Drug Substances",
+      "│   ├── Q12: Lifecycle Management",
+      "│   ├── Q13: Continuous Manufacturing",
+      "│   └── Q14: Analytical Procedure Development",
+      "├── Safety (S)",
+      "│   ├── S1: Carcinogenicity",
+      "│   ├── S2: Genotoxicity",
+      "│   ├── S5: Reproductive Toxicology",
+      "│   └── S9: Anticancer Drugs",
+      "├── Efficacy (E)",
+      "│   ├── E2: Pharmacovigilance",
+      "│   ├── E6: Good Clinical Practice",
+      "│   ├── E8: Clinical Trial Design",
+      "│   └── E9: Statistical Principles",
+      "└── Multidisciplinary (M)",
+      "    ├── M1: MedDRA Terminology",
+      "    ├── M4: Common Technical Document",
+      "    ├── M7: Mutagenic Impurities",
+      "    └── M13: Bioequivalence"
+    ]
+  },
+  "query_examples": {
+    "get_ich_info": "Access overview section for what is ICH, established, mission, etc.",
+    "get_category": "Access guidelines[category] for all guidelines in a category (e.g., Quality).",
+    "get_specific_guideline": "Access guidelines[category][guideline] for details (e.g., guidelines.Quality.Q1).",
+    "get_sub_guideline": "Access guidelines[category][guideline][sub_guidelines] for specific sub-guidelines (e.g., guidelines.Quality.Q3.sub_guidelines.Q3B)."
+  }
+}

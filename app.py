@@ -1,8 +1,9 @@
 # app.py
 import streamlit as st
 import json
-from RL_GEN_AI_1.0 import generate_dynamic_response
+from RL_GEN_AI import generate_dynamic_response
 from databass import load_guidelines_data, search_guidelines, save_to_memory, search_memory
+
 
 # ========== Load Guidelines ==========
 @st.cache_resource(show_spinner=False)

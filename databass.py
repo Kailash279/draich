@@ -1,8 +1,7 @@
 # databass.py
 import json
 import os
-import fitz  # PyMuPDF for PDF
-import pytesseract  # For OCR
+import fitz  # PyMuPDF
 from PIL import Image
 
 DATA_PATH = "ich_guidelines_database.json"
@@ -43,13 +42,12 @@ def search_guidelines(query, data):
 # ================================
 def update_memory(query, response):
     if not response or response.strip().lower() in ["none", "null", ""]:
-        return  # skip invalid entries
+        return
 
+    memory = {}
     if os.path.exists(MEMORY_PATH):
         with open(MEMORY_PATH, "r", encoding="utf-8") as f:
             memory = json.load(f)
-    else:
-        memory = {}
 
     memory[query.lower()] = response
     with open(MEMORY_PATH, "w", encoding="utf-8") as f:
@@ -93,31 +91,6 @@ def learn_from_text(uploaded_file):
                 text += page.get_text()
             return text.strip()
 
-        elif uploaded_file.name.endswith((".jpg", "jpeg", "png")):
-            image = Image.open(uploaded_file)
-            return pytesseract.image_to_string(image)
-
-        else:
-            return ""
-
-    except Exception as e:
-        return f"Error reading file: {e}"
-def learn_from_text(uploaded_file):
-    try:
-        # Handle .txt files
-        if uploaded_file.name.endswith(".txt"):
-            return uploaded_file.read().decode("utf-8")
-
-        # Handle .pdf files
-        elif uploaded_file.name.endswith(".pdf"):
-            import fitz
-            text = ""
-            pdf = fitz.open(stream=uploaded_file.read(), filetype="pdf")
-            for page in pdf:
-                text += page.get_text()
-            return text.strip()
-
-        # ❌ Image OCR skipped on cloud
         elif uploaded_file.name.endswith(("jpg", "jpeg", "png")):
             return "Image upload is not supported in cloud version."
 

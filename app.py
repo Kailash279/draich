@@ -16,7 +16,6 @@ from transformers import AutoTokenizer, pipeline
 # ========== Initialization ==========
 tokenizer = AutoTokenizer.from_pretrained("facebook/bart-large-cnn")
 summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
-
 MAX_INPUT_LENGTH = tokenizer.model_max_length
 
 # ========== Truncation Helper ==========
@@ -29,26 +28,26 @@ def truncate_text(text, max_length=500):
 st.set_page_config(page_title="ICH Chatbot Assistant", page_icon="🤖")
 st.title("ICH Guidelines Assistant 🤖")
 
-# ========== Session State Initialization ==========
+# ========== Session State ==========
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# ========== Load Guidelines Data ==========
+# ========== Load ICH Data ==========
 @st.cache_resource(show_spinner=False)
 def load_data():
     return load_guidelines_data()
 
 data = load_data()
 
-# ========== Helper Functions ==========
+# ========== File Upload Learning ==========
 def handle_uploaded_file(uploaded_file):
     try:
-        text = learn_from_text(uploaded_file)
-        return text
+        return learn_from_text(uploaded_file)
     except Exception as e:
         st.error(f"Error extracting text from file: {e}")
         return ""
 
+# ========== Main Response Handler ==========
 def respond_to_query(query):
     query_lower = query.lower()
 
@@ -66,7 +65,7 @@ def respond_to_query(query):
 
     return generate_dynamic_response(query)
 
-# ========== File Upload & Learning ==========
+# ========== File Learning Panel ==========
 with st.expander("📄 Upload a file to teach the bot (PDF, TXT, Image)"):
     uploaded_file = st.file_uploader("Choose a file", type=["pdf", "txt", "jpg", "jpeg", "png"])
     if uploaded_file:
@@ -78,7 +77,7 @@ with st.expander("📄 Upload a file to teach the bot (PDF, TXT, Image)"):
         else:
             st.warning("Could not extract text from this file.")
 
-# ========== PDF Summary Section ==========
+# ========== PDF Summary Panel ==========
 with st.expander("📁 Upload ICH PDF for Summary"):
     summary_file = st.file_uploader("Upload ICH Guideline PDF", type=["pdf"], key="summary_file")
     if summary_file:
@@ -104,23 +103,21 @@ if query:
     save_to_memory(query, response)
     st.session_state.messages.append({"role": "assistant", "content": response})
 
-# ========== Sidebar ==========
+# ========== Sidebar Info ==========
 with st.sidebar:
     st.header("📘 About This Assistant")
-    st.markdown(
-        """
-        **ICH Guidelines Assistant 🤖**
+    st.markdown("""
+**ICH Guidelines Assistant 🤖**
 
-        Hi, I am **Kailash Kothari**, the developer of this chatbot. 🤝
+Hi, I am **Kailash Kothari**, the developer of this chatbot. 🤝
 
-        This AI Assistant helps you understand and search through ICH Guidelines using:
+This AI Assistant helps you understand and search through ICH Guidelines using:
 
-        - 🧠 Memory-based recall
-        - 📘 Structured ICH database
-        - 🌐 Wikipedia fallback
-        - ♻️ RL learning loop (self-teaching)
-        - 📄 Upload files to help the bot learn
+- 🧠 Memory-based recall  
+- 📘 Structured ICH database  
+- 🌐 Wikipedia fallback  
+- ♻️ RL learning loop (self-teaching)  
+- 📄 Upload files to help the bot learn
 
-        Thanks for trying it out!
-        """
-    )
+Thanks for trying it out!
+""")

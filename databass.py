@@ -102,3 +102,26 @@ def learn_from_text(uploaded_file):
 
     except Exception as e:
         return f"Error reading file: {e}"
+def learn_from_text(uploaded_file):
+    try:
+        # Handle .txt files
+        if uploaded_file.name.endswith(".txt"):
+            return uploaded_file.read().decode("utf-8")
+
+        # Handle .pdf files
+        elif uploaded_file.name.endswith(".pdf"):
+            import fitz
+            text = ""
+            pdf = fitz.open(stream=uploaded_file.read(), filetype="pdf")
+            for page in pdf:
+                text += page.get_text()
+            return text.strip()
+
+        # ❌ Image OCR skipped on cloud
+        elif uploaded_file.name.endswith(("jpg", "jpeg", "png")):
+            return "Image upload is not supported in cloud version."
+
+        else:
+            return ""
+    except Exception as e:
+        return f"Error reading file: {e}"

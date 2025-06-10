@@ -1,0 +1,831 @@
+{
+  "overview": {
+    "what_is_ich": "The International Council for Harmonisation (ICH) is a global initiative that brings together regulatory authorities and pharmaceutical industry representatives to develop harmonized guidelines for safe, effective, and high-quality medicines.",
+    "established": "1990",
+    "mission": "To achieve global harmonization for the development, registration, and post-market surveillance of medicines, ensuring safety, efficacy, and quality while optimizing resources.",
+    "members": ["US FDA", "EU EMA", "Japan PMDA", "Health Canada", "PhRMA", "EFPIA", "JPMA"],
+    "observers": ["WHO", "ASEAN", "others"],
+    "categories": ["Quality", "Safety", "Efficacy", "Multidisciplinary"]
+  },
+  "guidelines": {
+    "Quality": {
+      "description": "Focuses on technical aspects of drug substance, product, manufacturing, and quality control to ensure consistent quality.",
+      "guidelines": {
+        "Q1": {
+          "name": "Stability Testing",
+          "sub_guidelines": {
+            "Q1A(R2)": {
+              "title": "Stability testing of new drug substances and products",
+              "purpose": "Sets general rules for testing drug stability under various environmental conditions.",
+              "use": "Companies test drugs in controlled conditions to determine shelf life and storage conditions.",
+              "details": "Requires testing under specific conditions (e.g., 25°C/60% RH, 40°C/75% RH) for at least 12 months; defines stress testing, accelerated, and long-term studies to assess degradation."
+            },
+            "Q1B": {
+              "title": "Photostability testing",
+              "purpose": "Checks if the drug degrades when exposed to light.",
+              "use": "Expose drugs to specific light conditions in labs to ensure packaging protects them from light.",
+              "details": "Specifies exposure to 1.2 million lux hours of visible light and 200 watt-hours/m² of UV; ensures drug stability under light exposure."
+            },
+            "Q1C": {
+              "title": "Stability for new dosage forms",
+              "purpose": "Ensures new forms of an existing drug are stable.",
+              "use": "Test the new form under same conditions as the original to compare stability.",
+              "details": "Applies to new dosage forms (e.g., tablet to liquid) of approved drugs; requires comparative stability data with the original form."
+            },
+            "Q1D": {
+              "title": "Bracketing and matrixing designs",
+              "purpose": "Reduces the number of stability tests by using smart sampling.",
+              "use": "Test only certain batches or conditions instead of all, saving time and resources.",
+              "details": "Bracketing tests extreme strengths (e.g., lowest and highest); matrixing tests a subset of samples over time to reduce testing burden."
+            },
+            "Q1E": {
+              "title": "Evaluation of stability data",
+              "purpose": "Guides how to analyze stability test results to predict shelf life.",
+              "use": "Use statistical methods to interpret data and set expiry dates.",
+              "details": "Provides statistical approaches for data analysis, including regression to determine shelf life; addresses out-of-specification results."
+            },
+            "Q1F": {
+              "title": "Stability data package for registration (withdrawn)",
+              "purpose": "Previously standardized stability data for regulatory submissions (now withdrawn).",
+              "use": "Not used anymore, but earlier helped in submitting consistent stability data.",
+              "details": "Withdrawn in 2006; previously outlined stability requirements for WHO Zone IVb (hot/humid climates)."
+            }
+          },
+          "purpose": "Ensures drugs remain effective and safe during storage by studying degradation over time.",
+          "use": "Used in stability studies to determine shelf life and storage conditions for regulatory submissions.",
+          "last_updated": "2003 (Q1A-Q1E), 2006 (Q1F withdrawn)"
+        },
+        "Q2": {
+          "name": "Analytical Validation",
+          "sub_guidelines": {
+            "Q2(R1)": {
+              "title": "Validation of analytical procedures: text and methodology",
+              "purpose": "Defines how to validate analytical methods (e.g., accuracy, precision).",
+              "use": "Labs follow this to prove their testing methods are trustworthy.",
+              "details": "Covers validation parameters like specificity, linearity, accuracy, precision, detection limit, and robustness; mandatory for regulatory submissions."
+            },
+            "Q2(R2)": {
+              "title": "Validation of analytical procedures (draft)",
+              "purpose": "Updates Q2(R1) with modern validation techniques (still in draft).",
+              "use": "Will be used once finalized to improve validation processes.",
+              "details": "Draft focuses on lifecycle management of analytical procedures; introduces risk-based validation approaches."
+            }
+          },
+          "purpose": "Ensures lab tests for drug quality are accurate and reliable.",
+          "use": "Validates analytical methods for accuracy, precision, and specificity in quality control.",
+          "last_updated": "2005 (Q2R1), 2023 (Q2R2 draft)"
+        },
+        "Q3": {
+          "name": "Impurities",
+          "sub_guidelines": {
+            "Q3A(R2)": {
+              "title": "Impurities in new drug substances",
+              "purpose": "Sets limits for impurities in raw drug materials.",
+              "use": "Test raw materials and ensure impurities are within safe limits.",
+              "details": "Defines thresholds for reporting (0.05%), identification (0.1%), and qualification (0.15%) of impurities; applies to non-biological drugs."
+            },
+            "Q3B(R2)": {
+              "title": "Impurities in new drug products",
+              "purpose": "Sets limits for impurities in final drug products.",
+              "use": "Test finished drugs to ensure they’re safe for patients.",
+              "details": "Sets thresholds for degradation products (e.g., 0.2% for high-dose drugs); requires toxicological qualification if limits exceeded."
+            },
+            "Q3C(R7)": {
+              "title": "Residual solvents",
+              "purpose": "Limits harmful solvents left in drugs after manufacturing.",
+              "use": "Test drugs for solvent levels and ensure they’re below safe thresholds.",
+              "details": "Classifies solvents into Class 1 (avoid), Class 2 (limit), and Class 3 (low risk); sets PDE (permitted daily exposure) limits, e.g., 50 mg/day for ethanol."
+            },
+            "Q3D(R2)": {
+              "title": "Elemental impurities",
+              "purpose": "Controls toxic metals (like lead) in drugs.",
+              "use": "Test drugs for metal impurities and ensure they meet safety standards.",
+              "details": "Covers 24 elements (e.g., lead, arsenic); sets PDE limits (e.g., 5 µg/day for lead); applies risk-based control strategies."
+            }
+          },
+          "purpose": "Controls impurities in drugs to ensure safety and quality.",
+          "use": "Identifies, quantifies, and sets limits for impurities, including degradation products.",
+          "last_updated": "2023 (Q3D R2)"
+        },
+        "Q4": {
+          "name": "Pharmacopoeias",
+          "sub_guidelines": {
+            "Q4B": {
+              "title": "Evaluation and recommendation of pharmacopoeial texts",
+              "purpose": "Ensures pharmacopoeial standards are consistent worldwide.",
+              "use": "Regulators accept pharmacopoeial tests if they follow Q4B recommendations.",
+              "details": "Harmonizes tests like dissolution, uniformity of dosage units; includes annexes for specific methods accepted by ICH regions."
+            }
+          },
+          "purpose": "Harmonizes standards for drug testing across global pharmacopoeias.",
+          "use": "Ensures consistency in pharmacopoeial testing methods globally.",
+          "last_updated": "2010"
+        },
+        "Q5": {
+          "name": "Quality of Biotechnological Products",
+          "sub_guidelines": {
+            "Q5A": {
+              "title": "Viral safety evaluation",
+              "purpose": "Ensures biotech drugs are free from viral contamination.",
+              "use": "Test biotech products for viruses during manufacturing.",
+              "details": "Requires testing for adventitious viruses; includes steps like virus inactivation, removal, and testing in cell lines."
+            },
+            "Q5B": {
+              "title": "Analysis of expression construct",
+              "purpose": "Verifies the genetic material used in biotech drugs is correct.",
+              "use": "Analyze the DNA/RNA used to produce biotech drugs.",
+              "details": "Focuses on genetic stability of expression systems (e.g., plasmids); ensures consistency in protein production."
+            },
+            "Q5C": {
+              "title": "Stability of biotechnological products",
+              "purpose": "Ensures biotech drugs remain stable over time.",
+              "use": "Conduct stability tests specific to biotech drugs.",
+              "details": "Addresses unique stability issues of proteins (e.g., aggregation, oxidation); requires real-time and accelerated testing."
+            },
+            "Q5D": {
+              "title": "Derivation and characterization of cell substrates",
+              "purpose": "Ensures cells used to make biotech drugs are safe and well-characterized.",
+              "use": "Test and document the cells used in biotech drug production.",
+              "details": "Covers cell line history, purity, and genetic stability; applies to mammalian, insect, and microbial cells."
+            },
+            "Q5E": {
+              "title": "Comparability of biotechnological products",
+              "purpose": "Ensures changes in manufacturing don’t affect biotech drug quality.",
+              "use": "Compare old and new batches after manufacturing changes.",
+              "details": "Requires physicochemical, biological, and clinical comparability studies post-manufacturing changes."
+            }
+          },
+          "purpose": "Ensures biotech drugs are safe and consistent in quality.",
+          "use": "Sets quality standards during biotech drug development.",
+          "last_updated": "2004 (Q5E)"
+        },
+        "Q6": {
+          "name": "Specifications",
+          "sub_guidelines": {
+            "Q6A": {
+              "title": "Specifications for new drug substances and products",
+              "purpose": "Defines quality standards for chemical drugs.",
+              "use": "Set limits for drug purity, potency, etc., during manufacturing.",
+              "details": "Covers tests like assay, impurities, dissolution; provides decision trees for setting acceptance criteria."
+            },
+            "Q6B": {
+              "title": "Specifications for biotechnological products",
+              "purpose": "Defines quality standards for biotech drugs.",
+              "use": "Set specific criteria for biotech drugs like vaccines.",
+              "details": "Addresses tests for identity, purity, potency of proteins; includes bioassays and physicochemical tests."
+            }
+          },
+          "purpose": "Sets standards for drug quality like purity and strength.",
+          "use": "Defines acceptance criteria for drug release and quality control.",
+          "last_updated": "1999 (Q6A, Q6B)"
+        },
+        "Q7": {
+          "name": "Good Manufacturing Practice (GMP) for APIs",
+          "purpose": "Ensures active pharmaceutical ingredients are made consistently and safely.",
+          "use": "Guides API manufacturers to meet quality standards.",
+          "details": "Covers GMP for API production, including personnel, facilities, equipment, documentation, and quality control; ensures traceability.",
+          "last_updated": "2000"
+        },
+        "Q8": {
+          "name": "Pharmaceutical Development",
+          "sub_guidelines": {
+            "Q8(R2)": {
+              "title": "Quality by Design (QbD)",
+              "purpose": "Introduces Quality by Design to improve drug development.",
+              "use": "Apply QbD principles to design robust manufacturing processes.",
+              "details": "Focuses on design space, critical quality attributes (CQAs), and risk management; enhances process understanding."
+            }
+          },
+          "purpose": "Promotes a scientific, risk-based approach to drug development.",
+          "use": "Designs robust manufacturing processes to ensure consistent quality.",
+          "last_updated": "2009"
+        },
+        "Q9": {
+          "name": "Quality Risk Management",
+          "sub_guidelines": {
+            "Q9(R1)": {
+              "title": "Revised quality risk management principles",
+              "purpose": "Updates risk management practices with new insights.",
+              "use": "Follow updated risk assessment tools to improve quality control.",
+              "details": "Introduces risk tools like FMEA, HACCP; emphasizes risk communication and continual improvement."
+            }
+          },
+          "purpose": "Identifies and manages risks to drug quality.",
+          "use": "Applies risk assessment tools in manufacturing and quality control.",
+          "last_updated": "2023"
+        },
+        "Q10": {
+          "name": "Pharmaceutical Quality System",
+          "purpose": "Establishes a quality management system for the drug lifecycle.",
+          "use": "Ensures consistent quality from development to market.",
+          "details": "Covers four elements: process performance, product quality monitoring, corrective/preventive actions, and change management.",
+          "last_updated": "2008"
+        },
+        "Q11": {
+          "name": "Development and Manufacture of Drug Substances",
+          "purpose": "Guides development of chemical and biotechnological drug substances.",
+          "use": "Ensures drug substances are made consistently with high quality.",
+          "details": "Addresses selection of starting materials, control strategy, and manufacturing process development; aligns with QbD principles.",
+          "last_updated": "2012"
+        },
+        "Q12": {
+          "name": "Lifecycle Management",
+          "purpose": "Manages post-approval changes and lifecycle of drugs.",
+          "use": "Facilitates regulatory flexibility for manufacturing updates.",
+          "details": "Introduces established conditions (ECs) and post-approval change management protocols (PACMPs); reduces regulatory burden.",
+          "last_updated": "2019"
+        },
+        "Q13": {
+          "name": "Continuous Manufacturing",
+          "purpose": "Supports continuous manufacturing processes for drugs.",
+          "use": "Guides design and validation of continuous manufacturing systems.",
+          "details": "Covers batch vs. continuous definitions, process control strategies, and real-time release testing for continuous production.",
+          "last_updated": "2023"
+        },
+        "Q14": {
+          "name": "Analytical Procedure Development",
+          "purpose": "Guides development of reliable analytical methods.",
+          "use": "Ensures robust analytical procedures for drug testing.",
+          "details": "Focuses on lifecycle management of analytical methods; complements Q2 with development and validation strategies.",
+          "last_updated": "2023"
+        }
+      }
+    },
+    "Safety": {
+      "description": "Focuses on non-clinical safety studies to assess risks like toxicity and carcinogenicity.",
+      "guidelines": {
+        "S1": {
+          "name": "Carcinogenicity Studies",
+          "sub_guidelines": {
+            "S1A": {
+              "title": "Need for carcinogenicity studies",
+              "purpose": "Determines if a drug needs carcinogenicity testing.",
+              "use": "Evaluate drug properties to decide if testing is required.",
+              "details": "Considers factors like drug use duration, patient population, and genotoxicity results to assess need for studies."
+            },
+            "S1B": {
+              "title": "Testing for carcinogenicity",
+              "purpose": "Provides methods for carcinogenicity testing.",
+              "use": "Follow these methods to conduct animal studies for cancer risk.",
+              "details": "Recommends 2-year rodent studies (rats and mice); allows alternative models like transgenic mice if justified."
+            },
+            "S1C": {
+              "title": "Dose selection for carcinogenicity studies",
+              "purpose": "Guides how to choose doses for cancer studies.",
+              "use": "Select appropriate doses to ensure valid study results.",
+              "details": "Uses maximum tolerated dose (MTD), 25-fold human exposure, or maximum feasible dose; ensures relevance to human exposure."
+            }
+          },
+          "purpose": "Assesses cancer risk of drugs through long-term studies.",
+          "use": "Conducts animal studies to evaluate cancer risk in preclinical stages.",
+          "last_updated": "2012"
+        },
+        "S2": {
+          "name": "Genotoxicity Testing",
+          "sub_guidelines": {
+            "S2(R1)": {
+              "title": "Genotoxicity testing and data interpretation",
+              "purpose": "Provides standard tests for genotoxicity and interpretation.",
+              "use": "Use these tests to assess DNA damage risks in early development.",
+              "details": "Includes Ames test (bacterial mutation), in vitro mammalian cell assay, and in vivo tests (e.g., micronucleus); provides decision trees for follow-up."
+            }
+          },
+          "purpose": "Evaluates potential for DNA damage by drugs.",
+          "use": "Conducts lab tests to ensure drugs are safe from genotoxic risks.",
+          "last_updated": "2011"
+        },
+        "S3": {
+          "name": "Toxicokinetics and Pharmacokinetics",
+          "sub_guidelines": {
+            "S3A": {
+              "title": "Toxicokinetics: assessment of systemic exposure",
+              "purpose": "Measures how much drug reaches the body during safety studies.",
+              "use": "Monitor drug levels in animals to correlate with toxicity.",
+              "details": "Focuses on AUC, Cmax, and systemic exposure in toxicity studies; ensures exposure data supports safety assessment."
+            },
+            "S3B": {
+              "title": "Pharmacokinetics: repeated dose tissue distribution",
+              "purpose": "Studies how a drug accumulates in tissues after repeated doses.",
+              "use": "Test tissue distribution in animals to assess long-term effects.",
+              "details": "Evaluates drug accumulation in organs like liver, kidney; helps understand toxicity related to tissue retention."
+            }
+          },
+          "purpose": "Studies drug absorption, distribution, and removal in the body.",
+          "use": "Monitors drug exposure in animals to assess safety.",
+          "last_updated": "1994"
+        },
+        "S4": {
+          "name": "Chronic Toxicity Testing",
+          "sub_guidelines": {
+            "S4": {
+              "title": "Duration of chronic toxicity testing in animals",
+              "purpose": "Defines how long chronic toxicity studies should last.",
+              "use": "Follow recommended durations (e.g., 6-12 months) for testing.",
+              "details": "Recommends 6 months for rodents, 9-12 months for non-rodents; aligns study duration with clinical use."
+            }
+          },
+          "purpose": "Tests effects of long-term drug exposure.",
+          "use": "Conducts long-term animal studies to identify chronic toxicity.",
+          "last_updated": "1997"
+        },
+        "S5": {
+          "name": "Reproductive Toxicology",
+          "sub_guidelines": {
+            "S5(R3)": {
+              "title": "Detection of reproductive and developmental toxicity",
+              "purpose": "Provides methods to test reproductive and developmental toxicity.",
+              "use": "Use these methods to assess risks to fertility and fetal health.",
+              "details": "Covers fertility, embryofetal development, and pre/postnatal studies; includes alternative in vitro methods."
+            }
+          },
+          "purpose": "Assesses effects on reproduction and fetal development.",
+          "use": "Tests in animals to ensure drug safety for pregnant women.",
+          "last_updated": "2020"
+        },
+        "S6": {
+          "name": "Biotechnology Products",
+          "sub_guidelines": {
+            "S6(R1)": {
+              "title": "Preclinical safety evaluation of biotechnology products",
+              "purpose": "Guides safety testing for biotech drugs before human trials.",
+              "use": "Follow these guidelines to design preclinical studies for biotech drugs.",
+              "details": "Focuses on species selection (biologically relevant species); includes immunogenicity, toxicity, and pharmacokinetics."
+            }
+          },
+          "purpose": "Ensures safety of biotech drugs like proteins and antibodies.",
+          "use": "Conducts specific safety studies for biotech drugs.",
+          "last_updated": "2011"
+        },
+        "S7": {
+          "name": "Pharmacology Studies",
+          "sub_guidelines": {
+            "S7A": {
+              "title": "Safety pharmacology studies",
+              "purpose": "Tests effects on vital functions (e.g., heart rate, breathing).",
+              "use": "Use animal studies to check for unexpected side effects.",
+              "details": "Covers core battery tests: cardiovascular, respiratory, and CNS; evaluates off-target effects."
+            },
+            "S7B": {
+              "title": "QT interval prolongation studies",
+              "purpose": "Checks if a drug affects heart rhythm (QT interval).",
+              "use": "Test in animals to ensure the drug doesn’t cause heart issues.",
+              "details": "Focuses on in vitro (hERG assay) and in vivo QT prolongation studies; assesses risk of arrhythmias."
+            }
+          },
+          "purpose": "Studies drug effects on body functions like heart and lungs.",
+          "use": "Conducts safety pharmacology studies to identify side effects.",
+          "last_updated": "2005 (S7B)"
+        },
+        "S8": {
+          "name": "Immunotoxicity Studies",
+          "purpose": "Tests if a drug harms the immune system.",
+          "use": "Conducts studies to ensure the drug doesn’t suppress immunity.",
+          "details": "Evaluates immunosuppression, hypersensitivity, and autoimmunity; includes tests like T-cell dependent antibody response (TDAR).",
+          "last_updated": "2005"
+        },
+        "S9": {
+          "name": "Non-clinical Evaluation for Anticancer Drugs",
+          "purpose": "Guides safety testing for cancer drugs.",
+          "use": "Balances efficacy and safety in preclinical studies for oncology drugs.",
+          "details": "Allows flexibility for life-threatening diseases; focuses on short-term toxicity, hematology, and organ function.",
+          "last_updated": "2009"
+        },
+        "S10": {
+          "name": "Photosafety Evaluation",
+          "purpose": "Tests if a drug causes skin reactions under light exposure.",
+          "use": "Conducts lab tests to ensure drug safety for skin under sunlight.",
+          "details": "Uses 3T3 NRU phototoxicity test; assesses photoreactivity and skin/eye phototoxicity risks.",
+          "last_updated": "2013"
+        },
+        "S11": {
+          "name": "Nonclinical Safety Testing for Pediatrics",
+          "purpose": "Ensures drugs are safe for children.",
+          "use": "Conducts additional safety studies in young animals for pediatric drugs.",
+          "details": "Focuses on juvenile animal studies; evaluates developmental toxicity specific to pediatric populations.",
+          "last_updated": "2017"
+        }
+      }
+    },
+    "Efficacy": {
+      "description": "Covers design, conduct, safety, and reporting of clinical trials.",
+      "guidelines": {
+        "E1": {
+          "name": "Clinical Safety for Long-Term Treatment",
+          "purpose": "Ensures drugs are safe for long-term use in patients.",
+          "use": "Collects safety data from long-term clinical trials.",
+          "details": "Requires at least 300 patients exposed for 6 months, 100 for 1 year; focuses on chronic use safety.",
+          "last_updated": "1994"
+        },
+        "E2": {
+          "name": "Pharmacovigilance",
+          "sub_guidelines": {
+            "E2A": {
+              "title": "Clinical safety data management",
+              "purpose": "Standardizes how to report serious side effects during clinical trials.",
+              "use": "Report unexpected adverse events quickly to regulators.",
+              "details": "Defines serious adverse events (SAEs); requires expedited reporting within 15 days for unexpected SAEs."
+            },
+            "E2B(R3)": {
+              "title": "Electronic transmission of adverse event reports",
+              "purpose": "Enables electronic submission of ICSR reports.",
+              "use": "Use electronic systems to send ICSR data to regulators.",
+              "details": "Uses XML format for ICSRs; standardizes data fields like patient info, adverse event, and drug details."
+            },
+            "E2C(R2)": {
+              "title": "Periodic benefit-risk evaluation reports",
+              "purpose": "Summarizes safety data of a drug periodically after approval.",
+              "use": "Submit PSURs to regulators to update on drug safety.",
+              "details": "Requires periodic submission (e.g., every 6 months initially); includes benefit-risk analysis and new safety signals."
+            },
+            "E2D": {
+              "title": "Post-approval safety data management",
+              "purpose": "Guides how to handle safety data after a drug is on the market.",
+              "use": "Collect and report post-market safety data to regulators.",
+              "details": "Focuses on spontaneous reports, literature, and other sources; ensures timely reporting of adverse events."
+            },
+            "E2E": {
+              "title": "Pharmacovigilance planning",
+              "purpose": "Plans how to monitor drug safety before and after approval.",
+              "use": "Create a pharmacovigilance plan during drug development.",
+              "details": "Includes safety specification and pharmacovigilance plan; identifies risks and mitigation strategies."
+            },
+            "E2F": {
+              "title": "Development safety update report (DSUR)",
+              "purpose": "Summarizes safety data during clinical trials annually.",
+              "use": "Submit DSURs to regulators to update on trial safety.",
+              "details": "Covers annual safety data, serious adverse events, and risk-benefit updates; aligns with global reporting timelines."
+            }
+          },
+          "purpose": "Monitors drug safety after approval to identify side effects.",
+          "use": "Tracks and reports adverse events in clinical trials and post-market.",
+          "last_updated": "2016 (E2B R3)"
+        },
+        "E3": {
+          "name": "Clinical Study Reports",
+          "purpose": "Standardizes writing of clinical trial reports.",
+          "use": "Writes detailed reports for submission to regulators.",
+          "details": "Provides a 16-section template for CSRs, including study design, results, and safety data; ensures consistency in reporting.",
+          "last_updated": "1995"
+        },
+        "E4": {
+          "name": "Dose-Response Studies",
+          "purpose": "Studies how different doses affect patients.",
+          "use": "Conducts trials to find the best dose for efficacy and safety.",
+          "details": "Recommends parallel dose-response designs; evaluates minimum effective dose and maximum tolerated dose.",
+          "last_updated": "1994"
+        },
+        "E5": {
+          "name": "Ethnic Factors in Clinical Data",
+          "purpose": "Considers ethnic differences in drug response.",
+          "use": "Analyzes clinical data to ensure drug works across populations.",
+          "details": "Uses bridging studies to extrapolate data across regions; addresses pharmacokinetic and pharmacodynamic differences.",
+          "last_updated": "1998"
+        },
+        "E6": {
+          "name": "Good Clinical Practice",
+          "sub_guidelines": {
+            "E6(R2)": {
+              "title": "Integrated addendum to GCP",
+              "purpose": "Updates GCP with modern trial practices (e.g., electronic records).",
+              "use": "Apply updated GCP rules for better trial quality.",
+              "details": "Emphasizes risk-based monitoring, electronic data systems, and sponsor oversight; ensures patient safety."
+            }
+          },
+          "purpose": "Sets ethical and scientific standards for clinical trials.",
+          "use": "Ensures trial integrity and patient safety.",
+          "last_updated": "2016"
+        },
+        "E7": {
+          "name": "Clinical Trials in Geriatric Population",
+          "purpose": "Ensures drugs are safe and effective for elderly patients.",
+          "use": "Includes elderly patients in trials to study age-specific effects.",
+          "details": "Recommends including patients over 65; addresses age-related pharmacokinetics and comorbidities.",
+          "last_updated": "1993"
+        },
+        "E8": {
+          "name": "General Considerations for Clinical Trials",
+          "sub_guidelines": {
+            "E8(R1)": {
+              "title": "Revised clinical trial design principles",
+              "purpose": "Updates trial design with a focus on quality and ethics.",
+              "use": "Use these principles to design modern clinical studies.",
+              "details": "Introduces quality by design in trials; focuses on critical-to-quality factors and patient-centric approaches."
+            }
+          },
+          "purpose": "Provides principles for clinical trial design.",
+          "use": "Ensures robust and scientific trial designs.",
+          "last_updated": "2021"
+        },
+        "E9": {
+          "name": "Statistical Principles for Clinical Trials",
+          "sub_guidelines": {
+            "E9(R1)": {
+              "title": "Estimands and sensitivity analysis",
+              "purpose": "Improves how trial results are interpreted statistically.",
+              "use": "Apply estimands to define what the trial is measuring.",
+              "details": "Defines estimands (e.g., treatment effect); requires sensitivity analyses to assess robustness of results."
+            }
+          },
+          "purpose": "Guides statistical methods in clinical trials.",
+          "use": "Ensures reliable statistical analysis of trial data.",
+          "last_updated": "2019"
+        },
+        "E10": {
+          "name": "Choice of Control Group",
+          "purpose": "Guides selection of control groups in trials.",
+          "use": "Selects appropriate control groups for valid trial results.",
+          "details": "Covers placebo, active control, and historical controls; discusses ethical considerations for placebo use.",
+          "last_updated": "2000"
+        },
+        "E11": {
+          "name": "Clinical Trials in Pediatric Population",
+          "purpose": "Ensures drugs are safe and effective for children.",
+          "use": "Designs trials specifically for pediatric patients.",
+          "details": "Addresses pediatric-specific pharmacokinetics, dosing, and ethical issues; includes neonates to adolescents.",
+          "last_updated": "2000"
+        },
+        "E12": {
+          "name": "Principles for Clinical Evaluation by Therapeutic Category",
+          "purpose": "Guides trials for specific disease categories.",
+          "use": "Uses category-specific guidelines for relevant diseases.",
+          "details": "Focuses on cardiovascular, oncology, and anti-infective drugs; provides tailored evaluation principles.",
+          "last_updated": "2000"
+        },
+        "E14": {
+          "name": "Clinical Evaluation of QT/QTc Interval",
+          "purpose": "Tests if a drug affects heart rhythm (QT interval).",
+          "use": "Conducts trials to ensure the drug doesn’t cause heart issues.",
+          "details": "Requires thorough QT studies in humans; uses ECG monitoring to assess risk of torsades de pointes.",
+          "last_updated": "2005"
+        },
+        "E15": {
+          "name": "Pharmacogenomics Definitions",
+          "purpose": "Standardizes terms used in genetic studies for drugs.",
+          "use": "Uses consistent terms in pharmacogenomic studies.",
+          "details": "Defines terms like genomic biomarker, pharmacogenomics, and pharmacogenetics; ensures clarity in regulatory submissions.",
+          "last_updated": "2007"
+        },
+        "E16": {
+          "name": "Biomarkers in Clinical Trials",
+          "purpose": "Guides the use of biomarkers in trials.",
+          "use": "Uses biomarkers to measure drug effects or disease progression.",
+          "details": "Covers biomarker qualification, validation, and use in trials; supports surrogate endpoints.",
+          "last_updated": "2010"
+        },
+        "E17": {
+          "name": "Multi-Regional Clinical Trials",
+          "purpose": "Guides trials conducted across multiple regions.",
+          "use": "Designs trials to account for regional differences.",
+          "details": "Addresses regional variability in efficacy/safety; ensures consistency in trial design and analysis.",
+          "last_updated": "2017"
+        },
+        "E18": {
+          "name": "Genomic Sampling",
+          "purpose": "Guides collection of genetic data in trials.",
+          "use": "Collects and analyzes genomic data ethically in trials.",
+          "details": "Covers informed consent, sample storage, and data privacy; ensures ethical genomic research.",
+          "last_updated": "2017"
+        },
+        "E19": {
+          "name": "Safety Data Collection Optimization",
+          "purpose": "Optimizes safety data collection in trials.",
+          "use": "Focuses on collecting necessary safety data to reduce burden.",
+          "details": "Uses targeted safety data collection for low-risk drugs; reduces unnecessary data collection.",
+          "last_updated": "2019"
+        },
+        "E20": {
+          "name": "Adaptive Clinical Trials",
+          "purpose": "Allows flexibility in trial design for efficiency.",
+          "use": "Modifies trial design mid-study based on interim results.",
+          "details": "Supports adaptations like sample size re-estimation, treatment arm selection; ensures statistical validity.",
+          "last_updated": "2023"
+        }
+      }
+    },
+    "Multidisciplinary": {
+      "description": "Covers cross-cutting topics like regulatory submissions and terminology.",
+      "guidelines": {
+        "M1": {
+          "name": "MedDRA Terminology",
+          "purpose": "Standardizes medical terminology for regulatory communication.",
+          "use": "Ensures consistent adverse event reporting using MedDRA terms.",
+          "details": "Hierarchical terminology with 5 levels (SOC, HLGT, HLT, PT, LLT); used for coding adverse events, diseases, and medical history.",
+          "last_updated": "Ongoing updates"
+        },
+        "M2": {
+          "name": "Electronic Standards",
+          "sub_guidelines": {
+            "M2": {
+              "title": "Electronic submission standards",
+              "purpose": "Sets standards for electronic data submission to regulators.",
+              "use": "Uses electronic formats to submit trial data.",
+              "details": "Defines formats like XML, PDF for submissions; ensures interoperability between regulatory systems."
+            }
+          },
+          "purpose": "Sets standards for electronic data submission to regulators.",
+          "use": "Uses electronic formats to submit trial data.",
+          "last_updated": "2005"
+        },
+        "M3": {
+          "name": "Nonclinical Safety Studies",
+          "sub_guidelines": {
+            "M3(R2)": {
+              "title": "Timing of nonclinical safety studies",
+              "purpose": "Specifies when to conduct nonclinical studies in drug development.",
+              "use": "Schedule animal studies to support clinical trial phases.",
+              "details": "Recommends timing for acute toxicity, genotoxicity, and reproductive studies before Phase 1-3 trials."
+            }
+          },
+          "purpose": "Guides timing and conduct of nonclinical safety studies.",
+          "use": "Plans animal studies before human trials to ensure safety.",
+          "last_updated": "2009"
+        },
+        "M4": {
+          "name": "Common Technical Document (CTD)",
+          "sub_guidelines": {
+            "M4(R1)": {
+              "title": "Organization of CTD",
+              "purpose": "Defines the structure of the CTD.",
+              "use": "Organize drug application data as per CTD structure.",
+              "details": "Divided into 5 modules: administrative, summaries, quality, nonclinical, and clinical data."
+            },
+            "M4Q": {
+              "title": "Quality module",
+              "purpose": "Details how to present quality data in the CTD.",
+              "use": "Include manufacturing and quality data in the quality section.",
+              "details": "Covers drug substance, drug product, manufacturing process, and control of impurities."
+            },
+            "M4S": {
+              "title": "Safety module",
+              "purpose": "Details how to present safety data in the CTD.",
+              "use": "Include nonclinical and clinical safety data in the safety section.",
+              "details": "Includes toxicology, pharmacokinetics, and safety pharmacology studies; summarizes safety profile."
+            },
+            "M4E": {
+              "title": "Efficacy module",
+              "purpose": "Details how to present efficacy data in the CTD.",
+              "use": "Include clinical trial efficacy data in the efficacy section.",
+              "details": "Covers clinical study reports, efficacy results, and benefit-risk evaluation."
+            }
+          },
+          "purpose": "Standardizes format for regulatory submissions.",
+          "use": "Streamlines global drug applications using the CTD format.",
+          "last_updated": "2004"
+        },
+        "M5": {
+          "name": "Data Elements and Standards",
+          "purpose": "Standardizes data elements for regulatory submissions.",
+          "use": "Uses standardized data formats for consistency.",
+          "details": "Defines data elements for clinical and nonclinical studies; ensures uniformity in data presentation.",
+          "last_updated": "2010"
+        },
+        "M6": {
+          "name": "Virus and Gene Therapy Vectors",
+          "purpose": "Guides safety and quality for gene therapy products.",
+          "use": "Develops and tests gene therapies safely.",
+          "details": "Addresses vector characterization, biodistribution, and shedding; ensures safety of gene therapy products.",
+          "last_updated": "2009"
+        },
+        "M7": {
+          "name": "Mutagenic Impurities",
+          "sub_guidelines": {
+            "M7(R2)": {
+              "title": "Assessment and control of mutagenic impurities",
+              "purpose": "Updates methods for assessing mutagenic impurities.",
+              "use": "Use updated tools to evaluate and control mutagenic risks.",
+              "details": "Uses (Q)SAR for mutagenicity prediction; sets TTC (threshold of toxicological concern) at 1.5 µg/day for lifetime exposure."
+            }
+          },
+          "purpose": "Controls DNA-reactive impurities in drugs.",
+          "use": "Tests drugs for mutagenic impurities and sets safe limits.",
+          "last_updated": "2021"
+        },
+        "M8": {
+          "name": "eCTD (Electronic CTD)",
+          "sub_guidelines": {
+            "M8": {
+              "title": "Electronic submission of CTD",
+              "purpose": "Provides technical details for eCTD submissions.",
+              "use": "Follow these standards to submit eCTD to regulators.",
+              "details": "Uses XML backbone for eCTD; defines folder structure, file formats, and lifecycle management."
+            }
+          },
+          "purpose": "Defines electronic format for submitting the CTD.",
+          "use": "Submits drug applications electronically using eCTD.",
+          "last_updated": "2016"
+        },
+        "M9": {
+          "name": "Biopharmaceutics Classification System (BCS)",
+          "purpose": "Classifies drugs based on solubility and absorption.",
+          "use": "Requests waivers for bioequivalence studies using BCS.",
+          "details": "Classifies drugs into 4 classes (I-IV); allows biowaivers for Class I (high solubility, high permeability) drugs.",
+          "last_updated": "2019"
+        },
+        "M10": {
+          "name": "Bioanalytical Method Validation",
+          "purpose": "Validates methods for measuring drug levels in the body.",
+          "use": "Uses validated methods to measure drug concentrations in trials.",
+          "details": "Covers validation of chromatographic and ligand-binding assays; ensures accuracy, precision, and selectivity.",
+          "last_updated": "2018"
+        },
+        "M11": {
+          "name": "Clinical Electronic Structured Harmonized Protocol (CeSHarP)",
+          "purpose": "Standardizes electronic clinical trial protocols.",
+          "use": "Creates uniform trial protocols electronically.",
+          "details": "Provides a structured template for protocols; includes sections like objectives, endpoints, and statistical analysis.",
+          "last_updated": "2022"
+        },
+        "M12": {
+          "name": "Drug Interaction Studies",
+          "purpose": "Guides studies on drug interactions.",
+          "use": "Identifies and manages drug interactions.",
+          "details": "Covers in vitro and in vivo interaction studies; focuses on CYP enzyme interactions and transporter effects.",
+          "last_updated": "2023"
+        },
+        "M13": {
+          "name": "Bioequivalence for Generics",
+          "purpose": "Guides bioequivalence studies for generic drugs.",
+          "use": "Proves generics are equivalent to branded drugs.",
+          "details": "Requires 90% confidence interval for AUC and Cmax within 80-125%; ensures therapeutic equivalence.",
+          "last_updated": "2024"
+        }
+      }
+    }
+  },
+  "diagram": {
+    "textual_representation": [
+      "ICH Guidelines",
+      "├── Quality (Q)",
+      "│   ├── Q1: Stability (Q1A–Q1F)",
+      "│   ├── Q2: Analytical Validation (Q2R1, Q2R2)",
+      "│   ├── Q3: Impurities",
+      "│   │   ├── Q3A: Drug Substances",
+      "│   │   ├── Q3B: Drug Products",
+      "│   │   ├── Q3C: Residual Solvents",
+      "│   │   └── Q3D: Elemental Impurities",
+      "│   ├── Q4: Pharmacopoeias (Q4B)",
+      "│   ├── Q5: Quality of Biotechnological Products (Q5A-Q5E)",
+      "│   ├── Q6: Specifications (Q6A, Q6B)",
+      "│   ├── Q7: Good Manufacturing Practice for APIs",
+      "│   ├── Q8: Pharmaceutical Development (Q8R2)",
+      "│   ├── Q9: Quality Risk Management (Q9R1)",
+      "│   ├── Q10: Pharmaceutical Quality System",
+      "│   ├── Q11: Drug Substances",
+      "│   ├── Q12: Lifecycle Management",
+      "│   ├── Q13: Continuous Manufacturing",
+      "│   └── Q14: Analytical Procedure Development",
+      "├── Safety (S)",
+      "│   ├── S1: Carcinogenicity (S1A-S1C)",
+      "│   ├── S2: Genotoxicity (S2R1)",
+      "│   ├── S3: Toxicokinetics and Pharmacokinetics (S3A, S3B)",
+      "│   ├── S4: Chronic Toxicity Testing",
+      "│   ├── S5: Reproductive Toxicology (S5R3)",
+      "│   ├── S6: Biotechnology Products (S6R1)",
+      "│   ├── S7: Pharmacology Studies (S7A, S7B)",
+      "│   ├── S8: Immunotoxicity Studies",
+      "│   ├── S9: Anticancer Drugs",
+      "│   ├── S10: Photosafety Evaluation",
+      "│   └── S11: Nonclinical Safety Testing for Pediatrics",
+      "├── Efficacy (E)",
+      "│   ├── E1: Clinical Safety for Long-Term Treatment",
+      "│   ├── E2: Pharmacovigilance (E2A-E2F)",
+      "│   ├── E3: Clinical Study Reports",
+      "│   ├── E4: Dose-Response Studies",
+      "│   ├── E5: Ethnic Factors in Clinical Data",
+      "│   ├── E6: Good Clinical Practice (E6R2)",
+      "│   ├── E7: Clinical Trials in Geriatric Population",
+      "│   ├── E8: Clinical Trial Design (E8R1)",
+      "│   ├── E9: Statistical Principles (E9R1)",
+      "│   ├── E10: Choice of Control Group",
+      "│   ├── E11: Clinical Trials in Pediatric Population",
+      "│   ├── E12: Principles for Clinical Evaluation by Therapeutic Category",
+      "│   ├── E14: Clinical Evaluation of QT/QTc Interval",
+      "│   ├── E15: Pharmacogenomics Definitions",
+      "│   ├── E16: Biomarkers in Clinical Trials",
+      "│   ├── E17: Multi-Regional Clinical Trials",
+      "│   ├── E18: Genomic Sampling",
+      "│   ├── E19: Safety Data Collection Optimization",
+      "│   └── E20: Adaptive Clinical Trials",
+      "└── Multidisciplinary (M)",
+      "    ├── M1: MedDRA Terminology",
+      "    ├── M2: Electronic Standards",
+      "    ├── M3: Nonclinical Safety Studies (M3R2)",
+      "    ├── M4: Common Technical Document (M4R1, M4Q, M4S, M4E)",
+      "    ├── M5: Data Elements and Standards",
+      "    ├── M6: Virus and Gene Therapy Vectors",
+      "    ├── M7: Mutagenic Impurities (M7R2)",
+      "    ├── M8: eCTD",
+      "    ├── M9: Biopharmaceutics Classification System (BCS)",
+      "    ├── M10: Bioanalytical Method Validation",
+      "    ├── M11: Clinical Electronic Structured Harmonized Protocol (CeSHarP)",
+      "    ├── M12: Drug Interaction Studies",
+      "    └── M13: Bioequivalence for Generics"
+    ]
+  },
+  "query_examples": {
+    "get_ich_info": "Access overview section for what is ICH, established, mission, etc.",
+    "get_category": "Access guidelines[category] for all guidelines in a category (e.g., Quality).",
+    "get_specific_guideline": "Access guidelines[category][guideline] for details (e.g., guidelines.Quality.Q1).",
+    "get_sub_guideline": "Access guidelines[category][guideline][sub_guidelines] for specific sub-guidelines (e.g., guidelines.Quality.Q3.sub_guidelines.Q3B)."
+  }
+}

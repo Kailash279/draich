@@ -1,6 +1,5 @@
 # app.py
 import streamlit as st
-import json
 from RL_GEN_AI import generate_dynamic_response
 from databass import (
     load_data as load_guidelines_data,
@@ -13,33 +12,30 @@ from databass import (
 from utils import extract_text_from_pdf, summarize_text
 from transformers import AutoTokenizer, pipeline
 
-# ========== Initialization ==========
+# Initialization
 tokenizer = AutoTokenizer.from_pretrained("facebook/bart-large-cnn")
 summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
 MAX_INPUT_LENGTH = tokenizer.model_max_length
 
-# ========== Truncation Helper ==========
 def truncate_text(text, max_length=500):
     if not text:
         return ""
     return text if len(text) <= max_length else text[:max_length] + "..."
 
-# ========== Page Setup ==========
+# Streamlit page config
 st.set_page_config(page_title="ICH Chatbot Assistant", page_icon="🤖")
 st.title("ICH Guidelines Assistant 🤖")
 
-# ========== Session State ==========
+# Session state setup
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# ========== Load ICH Data ==========
 @st.cache_resource(show_spinner=False)
 def load_data():
     return load_guidelines_data()
 
 data = load_data()
 
-# ========== File Upload Learning ==========
 def handle_uploaded_file(uploaded_file):
     try:
         return learn_from_text(uploaded_file)
@@ -47,7 +43,6 @@ def handle_uploaded_file(uploaded_file):
         st.error(f"Error extracting text from file: {e}")
         return ""
 
-# ========== Main Response Handler ==========
 def respond_to_query(query):
     query_lower = query.lower()
 
@@ -58,14 +53,13 @@ def respond_to_query(query):
     if mem_response and mem_response.strip().lower() not in ["none", "null", ""]:
         return f"(📁 From Memory)\n\n{mem_response}"
 
-    if any(keyword in query_lower for keyword in ["guideline", "q1", "q2", "s1", "m4"]):
-        db_resp = search_guidelines(query, data)
-        if db_resp:
-            return f"(📘 From ICH Database)\n\n{db_resp}"
+    db_resp = search_guidelines(query, data)
+    if db_resp and "no matching guideline" not in db_resp.lower():
+        return f"(📘 From ICH Database)\n\n{db_resp}"
 
     return generate_dynamic_response(query)
 
-# ========== File Learning Panel ==========
+# File upload for learning
 with st.expander("📄 Upload a file to teach the bot (PDF, TXT, Image)"):
     uploaded_file = st.file_uploader("Choose a file", type=["pdf", "txt", "jpg", "jpeg", "png"])
     if uploaded_file:
@@ -77,7 +71,7 @@ with st.expander("📄 Upload a file to teach the bot (PDF, TXT, Image)"):
         else:
             st.warning("Could not extract text from this file.")
 
-# ========== PDF Summary Panel ==========
+# PDF Summary
 with st.expander("📁 Upload ICH PDF for Summary"):
     summary_file = st.file_uploader("Upload ICH Guideline PDF", type=["pdf"], key="summary_file")
     if summary_file:
@@ -90,12 +84,12 @@ with st.expander("📁 Upload ICH PDF for Summary"):
         st.subheader("Summary of the Guideline:")
         st.write(summary)
 
-# ========== Chat History ==========
+# Chat display
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
 
-# ========== Chat Input ==========
+# Chat input
 query = st.chat_input("Ask anything about ICH...")
 if query:
     st.session_state.messages.append({"role": "user", "content": query})
@@ -103,7 +97,7 @@ if query:
     save_to_memory(query, response)
     st.session_state.messages.append({"role": "assistant", "content": response})
 
-# ========== Sidebar Info ==========
+# Sidebar
 with st.sidebar:
     st.header("📘 About This Assistant")
     st.markdown("""

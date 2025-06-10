@@ -16,3 +16,4 @@ wikipedia
 pytesseract
 PyPDF2
 mysql-connector-python>=8.0.0
+
